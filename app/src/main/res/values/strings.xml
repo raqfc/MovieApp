@@ -1,12 +1,64 @@
 <resources>
     <string name="app_name">MovieApp</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="ok">Ok</string>
+
+    <!-- Content Description   -->
+    <string name="back">Voltar</string>
+    <string name="share">Compartilhar</string>
+    <string name="content_description_avatar_image">Imagem de avatar</string>
+
+    <string name="default_error_title">Ops =(</string>
+    <string name="default_success_title">Sucesso!</string>
+    <string name="default_error_content">Ocorreu um erro inesperado</string>
+    <string name="default_loading">Carregando</string>
+
+
+    <!--  Default fields hint  -->
+    <string name="dialog_select_option">Selecione uma opção</string>
+    <string name="default_hint">Preencha</string>
+    <string name="default_validation_error_message">Campo inválido</string>
+    <string name="default_empty_error_message">Não pode ser vazio</string>
+
+    <!-- Login   -->
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Senha</string>
+    <string name="login_enter_hint">Entrar</string>
+    <string name="login_email_error_message">Email inválido</string>
+    <string name="login_password_error_message">Senha inválida</string>
+    <string name="login_recover_password">Esqueci minha senha</string>
+
+    <!-- Recover password   -->
+    <string name="recover_password_button">Recuperar</string>
+    <string name="recover_password_dialog_success_content">O email de recuperação foi enviado com sucesso!</string>
+
+    <!-- MainView   -->
+    <string name="main_nav_item_home">Home</string>
+    <string name="main_nav_item_quality">Segurança</string>
+    <string name="main_nav_item_billing">Faturamento</string>
+    <string name="main_nav_item_schedule">Escalas</string>
+    <string name="main_nav_item_config">Configuração</string>
+
+
+    <!-- formats -->
+    <string name="format_date_simple">dd/MM/yyyy</string>
+    <string name="format_date_complete">dd/MM/yyyy HH:mm</string>
+    <string name="format_date_month_year">MM/yyyy</string>
+    <string name="format_date_long">dd MMM \'de\' yyyy</string>
+    <string name="format_date_short_month">dd MMM</string>
+    <string name="format_date_month_year_long">MMMM \'de\' yyyy</string>
+    <string name="format_date_month">MMMM</string>
+    <string name="format_date_year">yyyy</string>
+    <string name="format_date_iso">yyyy-MM-dd</string>
+    <string name="format_date_file">yyyyMMdd_HHmmss</string>
+    <string name="format_hour">HH:mm</string>
+
+    <string name="date_simple_string">%s/%s/%s</string>
+
+
+    <string name="a">a</string>
+    <string name="b">aQda</string>
+    <string name="c">aADAda</string>
+    <string name="d">addwAdaadad</string>
+    <string name="e">bbbe</string>
 </resources>

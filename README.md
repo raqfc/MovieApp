@@ -1,0 +1,1 @@
+criar arquivo apiKey.properties com IMDb_API_KEY="{imdb_api_key}"
