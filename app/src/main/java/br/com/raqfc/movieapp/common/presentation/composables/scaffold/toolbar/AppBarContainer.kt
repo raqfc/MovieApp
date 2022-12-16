@@ -20,7 +20,7 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package br.com.justworks.volan2.commom.presentation.composables.scaffold.toolbar
+package br.com.raqfc.movieapp.common.presentation.composables.scaffold.toolbar
 
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.runtime.Composable

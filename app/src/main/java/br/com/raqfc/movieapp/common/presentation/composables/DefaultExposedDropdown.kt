@@ -1,4 +1,4 @@
-package br.com.justworks.volan2.commom.presentation.composables
+package br.com.raqfc.movieapp.common.presentation.composables
 
 import androidx.compose.material.*
 import androidx.compose.material3.*

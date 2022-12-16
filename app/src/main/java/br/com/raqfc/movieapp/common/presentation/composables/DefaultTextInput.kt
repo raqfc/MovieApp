@@ -1,4 +1,4 @@
-package br.com.justworks.volan2.commom.presentation.composables
+package br.com.raqfc.movieapp.common.presentation.composables
 
 import android.util.Patterns
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -25,8 +25,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.justworks.volan2.commom.presentation.text_input_transformation.MaskVisualTransformation
-import br.com.justworks.volan2.commom.state.TextFieldState
+import br.com.raqfc.movieapp.common.presentation.text_input_transformation.MaskVisualTransformation
+import br.com.raqfc.movieapp.common.state.TextFieldState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview("DefaultTextField")

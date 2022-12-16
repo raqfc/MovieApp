@@ -6,13 +6,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
-import br.com.justworks.volan2.ui.theme.Shapes
-import br.com.justworks.volan2.ui.theme.Typography
-import br.com.justworks.volan2.ui.theme.base.VolanAppColors
-import br.com.justworks.volan2.ui.theme.colors.DarkColorScheme
-import br.com.justworks.volan2.ui.theme.colors.DarkAppColors
-import br.com.justworks.volan2.ui.theme.colors.LightColorScheme
-import br.com.justworks.volan2.ui.theme.colors.LightAppColors
+import br.com.raqfc.movieapp.ui.theme.base.VolanAppColors
+import br.com.raqfc.movieapp.ui.theme.colors.DarkColorScheme
+import br.com.raqfc.movieapp.ui.theme.colors.DarkAppColors
+import br.com.raqfc.movieapp.ui.theme.colors.LightColorScheme
+import br.com.raqfc.movieapp.ui.theme.colors.LightAppColors
 
 @Composable
 fun VolanTheme(

@@ -7,9 +7,12 @@ import br.com.raqfc.movieapp.data.local.FavoriteContentsRepository
 import br.com.raqfc.movieapp.data.network.ContentRepository
 import br.com.raqfc.movieapp.domain.entities.ContentEntity
 import br.com.raqfc.movieapp.domain.enums.ContentType
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+@HiltViewModel
 class MainViewModel @Inject constructor(
     val contentRepository: ContentRepository,
     val favoritesRepository: FavoriteContentsRepository

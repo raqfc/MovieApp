@@ -1,4 +1,4 @@
-package br.com.justworks.volan2.commom.presentation.composables.listing
+package br.com.raqfc.movieapp.common.presentation.composables.listing
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.justworks.volan2.ui.theme.AppTheme
+import br.com.raqfc.movieapp.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

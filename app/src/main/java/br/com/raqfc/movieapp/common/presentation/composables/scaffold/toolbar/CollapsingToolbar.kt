@@ -20,7 +20,7 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package br.com.justworks.volan2.commom.presentation.composables.scaffold.toolbar
+package br.com.raqfc.movieapp.common.presentation.composables.scaffold.toolbar
 
 import androidx.annotation.FloatRange
 import androidx.compose.animation.core.AnimationState

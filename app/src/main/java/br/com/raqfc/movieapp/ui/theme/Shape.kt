@@ -1,4 +1,4 @@
-package br.com.justworks.volan2.ui.theme
+package br.com.raqfc.movieapp.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.dp

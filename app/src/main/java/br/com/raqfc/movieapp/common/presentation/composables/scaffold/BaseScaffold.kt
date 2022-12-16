@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package br.com.justworks.volan2.commom.presentation.composables.scaffold
+package br.com.raqfc.movieapp.common.presentation.composables.scaffold
 
 import ActionItem
 import ActionMenu
@@ -16,12 +16,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.justworks.volan2.R
 import br.com.raqfc.movieapp.common.presentation.BaseUiEvent
-import br.com.justworks.volan2.commom.presentation.composables.dialog.CustomAlertDialog
-import br.com.justworks.volan2.commom.presentation.composables.dialog.ProgressDialog
-import br.com.justworks.volan2.commom.presentation.composables.scaffold.toolbar.CollapsingToolbarScopeInstance.road
-import br.com.justworks.volan2.commom.presentation.composables.scaffold.toolbar.ViewConfiguration
+import br.com.raqfc.movieapp.common.presentation.composables.dialog.CustomAlertDialog
+import br.com.raqfc.movieapp.common.presentation.composables.dialog.ProgressDialog
+import br.com.raqfc.movieapp.common.presentation.composables.scaffold.toolbar.CollapsingToolbarScopeInstance.road
+import br.com.raqfc.movieapp.common.presentation.composables.scaffold.toolbar.ViewConfiguration
+import br.com.raqfc.movieapp.R
 
 @Composable
 fun BaseScaffold(
@@ -110,7 +110,7 @@ fun BaseScaffold(
             is BaseUiEvent.ShowError -> {
                 (mUiEvent as BaseUiEvent.ShowError).let { e ->
                     CustomAlertDialog(
-                        content = e.error.errorMessage(),
+//                        content = e.error.message,//todo
                         onClick = {
                             e.onClick()
                             mUiEvent = null

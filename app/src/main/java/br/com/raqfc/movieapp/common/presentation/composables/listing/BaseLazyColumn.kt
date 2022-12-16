@@ -1,4 +1,4 @@
-package br.com.justworks.volan2.commom.presentation.composables.listing
+package br.com.raqfc.movieapp.common.presentation.composables.listing
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -17,8 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import br.com.justworks.volan2.commom.presentation.composables.animations.Transitions
-import br.com.justworks.volan2.ui.theme.AppTheme
+import br.com.raqfc.movieapp.ui.theme.AppTheme
+import br.com.raqfc.movieapp.common.presentation.composables.animations.Transitions
 
 @Composable
 fun BaseLazyColumn(

@@ -1,8 +1,8 @@
-package br.com.justworks.volan2.ui.theme.colors
+package br.com.raqfc.movieapp.ui.theme.colors
 
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.graphics.Color
-import br.com.justworks.volan2.ui.theme.base.VolanAppColors
+import br.com.raqfc.movieapp.ui.theme.base.VolanAppColors
 
 //private val DarkColorPalette = darkColors(
 //    primary = Purple200,

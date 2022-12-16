@@ -1,4 +1,4 @@
-package br.com.justworks.volan2.commom.presentation.composables
+package br.com.raqfc.movieapp.common.presentation.composables
 
 import android.view.MotionEvent
 import androidx.compose.foundation.focusable
@@ -232,7 +232,7 @@ class DateTextInput private constructor() {
                                 openDialogDate(supportFragmentManager, blockPastDates, isDateAndHour, labelText ?: "", lastDate, localOnDateChanged)
                         }) {
                             Icon(
-                                painter = painterResource(id = br.com.justworks.volan2.R.drawable.ic_calendar),
+                                painter = painterResource(id = com.google.android.material.R.drawable.material_ic_calendar_black_24dp),
                                 tint = MaterialTheme.colorScheme.primary,
                                 contentDescription = "calendar icon",
                             )

@@ -1,11 +1,15 @@
-package br.com.justworks.volan2.main.presentation.bottombar
+package br.com.raqfc.movieapp.ui.presentation.bottombar
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import br.com.justworks.volan2.R
+import br.com.raqfc.movieapp.R
+import br.com.raqfc.movieapp.ui.presentation.bottombar.billing.BillingMainNavView
+import br.com.raqfc.movieapp.ui.presentation.bottombar.config.ConfigMainNavView
+import br.com.raqfc.movieapp.ui.presentation.bottombar.quality.QualityMainNavView
+import br.com.raqfc.movieapp.ui.presentation.bottombar.schedule.ScheduleMainNavView
 import br.com.raqfc.movieapp.ui.presentation.bottombar.home.HomeMainNavView
 
 sealed class MainNavigationBarItems(val iconVector: ImageVector, @StringRes val labelRes: Int, var selected: Boolean = false, val view: (@Composable () -> Unit) = {}) {

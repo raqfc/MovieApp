@@ -1,4 +1,4 @@
-package br.com.justworks.volan2.commom.presentation.composables.listing
+package br.com.raqfc.movieapp.common.presentation.composables.listing
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -10,7 +10,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import br.com.justworks.volan2.ui.theme.AppTheme
+import br.com.raqfc.movieapp.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
 @Composable

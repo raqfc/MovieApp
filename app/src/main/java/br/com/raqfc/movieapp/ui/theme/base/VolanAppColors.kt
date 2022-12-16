@@ -1,4 +1,4 @@
-package br.com.justworks.volan2.ui.theme.base
+package br.com.raqfc.movieapp.ui.theme.base
 
 
 import androidx.compose.runtime.getValue

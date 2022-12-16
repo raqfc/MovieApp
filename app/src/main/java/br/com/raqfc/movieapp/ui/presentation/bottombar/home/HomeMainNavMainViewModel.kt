@@ -1,4 +1,4 @@
-package br.com.justworks.volan2.main.presentation.bottombar.home
+package br.com.raqfc.movieapp.ui.presentation.bottombar.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.lazy.LazyListState

@@ -1,4 +1,4 @@
-package br.com.justworks.volan2.ui.theme.colors
+package br.com.raqfc.movieapp.ui.theme.colors
 
 import androidx.compose.ui.graphics.Color
 

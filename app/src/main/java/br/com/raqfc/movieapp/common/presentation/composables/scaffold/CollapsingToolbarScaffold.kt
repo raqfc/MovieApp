@@ -20,7 +20,7 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package br.com.justworks.volan2.commom.presentation.composables.scaffold
+package br.com.raqfc.movieapp.common.presentation.composables.scaffold
 
 import ActionItem
 import ActionMenu
@@ -54,12 +54,12 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.justworks.volan2.R
 import br.com.raqfc.movieapp.common.presentation.BaseUiEvent
-import br.com.justworks.volan2.commom.presentation.composables.dialog.CustomAlertDialog
-import br.com.justworks.volan2.commom.presentation.composables.dialog.ProgressDialog
-import br.com.justworks.volan2.commom.presentation.composables.scaffold.CollapsingToolbarScaffoldScopeInstance.align
-import br.com.justworks.volan2.commom.presentation.composables.scaffold.toolbar.*
+import br.com.raqfc.movieapp.common.presentation.composables.dialog.CustomAlertDialog
+import br.com.raqfc.movieapp.common.presentation.composables.dialog.ProgressDialog
+import br.com.raqfc.movieapp.common.presentation.composables.scaffold.toolbar.*
+import br.com.raqfc.movieapp.common.presentation.composables.scaffold.toolbar.*
+import com.google.android.material.R
 import kotlin.math.max
 
 @Stable
@@ -108,8 +108,8 @@ fun CollapsingToolbarScaffold(
     toolbarModifier: Modifier = Modifier,
 
     showBackButton: Boolean = true,
-    @DrawableRes backButtonIcon: Int = com.google.android.material.R.drawable.abc_vector_test,
-    @StringRes titleRes: Int = R.string.app_name,
+    @DrawableRes backButtonIcon: Int = R.drawable.abc_vector_test,
+    @StringRes titleRes: Int = br.com.raqfc.movieapp.R.string.app_name,
     actions: List<ActionItem> = listOf(),
     onUpClicked: () -> Unit = {},
     toolbar: (@Composable CollapsingToolbarScope.() -> Unit)? = null,
@@ -231,7 +231,7 @@ fun CollapsingToolbarScaffold(
                     is BaseUiEvent.ShowError -> {
                         (mUiEvent as BaseUiEvent.ShowError).let { e ->
                             CustomAlertDialog(
-                                content = e.error.errorMessage(),
+//                                content = e.error.errorMessage(),//todo
                                 onClick = {
                                     e.onClick()
                                     mUiEvent = null

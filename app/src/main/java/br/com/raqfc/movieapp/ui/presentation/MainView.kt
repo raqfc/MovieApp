@@ -13,12 +13,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import br.com.justworks.volan2.commom.presentation.composables.scaffold.CollapsingToolbarScaffold
-import br.com.justworks.volan2.commom.presentation.composables.scaffold.rememberCollapsingToolbarScaffoldState
-import br.com.justworks.volan2.main.presentation.bottombar.MainNavigationBarItems
+import br.com.raqfc.movieapp.common.presentation.composables.scaffold.CollapsingToolbarScaffold
+import br.com.raqfc.movieapp.common.presentation.composables.scaffold.rememberCollapsingToolbarScaffoldState
+import br.com.raqfc.movieapp.ui.presentation.bottombar.MainNavigationBarItems
 import br.com.raqfc.movieapp.R
 import br.com.raqfc.movieapp.ui.presentation.view_model.MainViewModel
-import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,7 +31,7 @@ fun MainView(navController: NavController, mainViewModel: MainViewModel = hiltVi
         ActionItem(R.string.c, Icons.Default.Email, OverflowMode.IF_NECESSARY) {},
         ActionItem(R.string.d, Icons.Default.Delete, OverflowMode.IF_NECESSARY) {},
     )
-    mainViewModel.getContent()
+//    mainViewModel.getContent()
 //
 //    val scope = rememberCoroutineScope()
 //    scope.launch {
