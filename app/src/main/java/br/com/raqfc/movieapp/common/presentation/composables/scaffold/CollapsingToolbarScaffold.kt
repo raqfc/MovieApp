@@ -203,7 +203,7 @@ fun CollapsingToolbarScaffold(
                                 titleSize = it.size
                                 titlePosition = it.positionInParent()
                             },
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         fontSize = textSize
                     )
 
@@ -215,6 +215,7 @@ fun CollapsingToolbarScaffold(
                         ) {
                             Icon(
                                 painter = painterResource(id = backButtonIcon),
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 contentDescription = "back button"
                             )
                         }
@@ -310,19 +311,20 @@ fun CollapsingToolbarScaffold(
             minWidth = 0,
             minHeight = 0
         )
+        val toolbarPlaceable = measurables[0].measure(toolbarConstraints)
         val bodyConstraints = constraints.copy(
             minWidth = 0,
             minHeight = 0,
             maxHeight = when (scrollStrategy) {
                 ScrollStrategy.ExitUntilCollapsed ->
-                    ((constraints.maxHeight - toolbarState.minHeight) - (toolbarState.height - toolbarState.minHeight )).coerceAtLeast(0)
+                    ((constraints.maxHeight - toolbarState.minHeight) - (toolbarState.height - toolbarState.minHeight )).coerceAtLeast(toolbarPlaceable.height)
 
                 ScrollStrategy.EnterAlways, ScrollStrategy.EnterAlwaysCollapsed ->
                     constraints.maxHeight
             }
         )
 
-        val toolbarPlaceable = measurables[0].measure(toolbarConstraints)
+
 
         val bodyMeasurables = measurables.subList(1, measurables.size)
         val childrenAlignments = bodyMeasurables.map {
