@@ -1,58 +1,71 @@
 package br.com.raqfc.movieapp.ui.presentation.view_model
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import br.com.raqfc.movieapp.common.ListResource
+import br.com.raqfc.movieapp.common.presentation.BaseNotifyingViewModel
 import br.com.raqfc.movieapp.data.local.FavoriteContentsRepository
 import br.com.raqfc.movieapp.data.network.ContentRepository
 import br.com.raqfc.movieapp.domain.entities.ContentEntity
 import br.com.raqfc.movieapp.domain.enums.ContentType
+import br.com.raqfc.movieapp.ui.presentation.ContentFetchMode
+import br.com.raqfc.movieapp.ui.presentation.ViewModeState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     val contentRepository: ContentRepository,
-    val favoritesRepository: FavoriteContentsRepository
-) : ViewModel() {
-    private var contents: MutableList<ContentEntity> = mutableListOf()
-    var contentFetchType: ContentFetchType = ContentFetchType.Top250(ContentType.MOVIE)
+    val favoritesRepository: FavoriteContentsRepository,
+) : BaseNotifyingViewModel<ContentEntity>() {
+
+    private val _viewModeState = mutableStateOf(ViewModeState(ContentType.MOVIE, ContentFetchMode.TOP250, false))
+    var viewModeState: State<ViewModeState> = _viewModeState
+//
+//    private val _eventFlow = MutableSharedFlow<ListResource<ContentEntity>>()
+//    val eventFlow = _eventFlow.asSharedFlow()
+
+
+    private val _state = mutableStateOf<ListResource<ContentEntity>>(ListResource.Success(mutableListOf()))
+    val state: State<ListResource<ContentEntity>> = _state
+
+    init {
+        getContent(false)
+    }
+
+    fun changeContentType(contentType: ContentType) {
+        _viewModeState.value = viewModeState.value.copy(
+            contentType = contentType
+        )
+        getContent()
+    }
+
+    fun changeFetchMode(fetchMode: ContentFetchMode) {
+        _viewModeState.value = viewModeState.value.copy(
+            fetchMode = fetchMode
+        )
+    }
 
     fun getContent(
-        forceRefresh: Boolean,
-        contentFetchType: ContentFetchType
-    ){ //: Result<MutableList<ContentEntity>>
-        viewModelScope.launch {
-            try {
-                val favorites = favoritesRepository.getAllFavorites(contentFetchType.contentType)
-                val data =
-                    if (!forceRefresh && contentFetchType == this@MainViewModel.contentFetchType && contents.isNotEmpty()) {
-                        contents
-                    } else {
-                        contentRepository.getContent(contentFetchType).fold(onSuccess = {
-                            it
-                        }, onFailure = {
-                            return@launch //Result.failure(it)
-                        })
-                    }
+        forceRefresh: Boolean = false,
+    ) {
+        execute(_state) {
+            val favorites = favoritesRepository.getAllFavorites(viewModeState.value.contentType)
+            val data =
+                contentRepository.getContent(forceRefresh, viewModeState.value.contentType).fold(onSuccess = {
+                    it
+                }, onFailure = {
+                    throw it
+                })
 
-                data.forEach {
-                    it.isFavorite = favorites.contains(it.id)
-                }
-                contents = data
-                this@MainViewModel.contentFetchType = contentFetchType
-
-                Result.success(contents)
-                Log.e("MainViewModel -> getContent success:", contents.toString())
-            } catch (e: Exception) {
-                Log.e("MainViewModel -> getContent error:", e.message ?: "")
-                e.printStackTrace()
-//                Result.failure(e)
+            data.forEach {
+                it.isFavorite = favorites.contains(it.id)
             }
+            _state.value = ListResource.Success(data = data)
+            Log.e("MainViewModel -> getContent success:", data.toString())
         }
-
     }
 
     suspend fun toggleFavorite(
@@ -63,10 +76,4 @@ class MainViewModel @Inject constructor(
         favoritesRepository.setFavorite(id, contentType, isFavorite)
         return Result.success(true)
     }
-}
-
-sealed class ContentFetchType(val path: String, val contentType: ContentType) {
-    data class Top250(val type: ContentType) : ContentFetchType("Top250${type.topPath}", type)
-    data class Search(val search: String, val type: ContentType) :
-        ContentFetchType("Search${type.searchPath}", type)
 }

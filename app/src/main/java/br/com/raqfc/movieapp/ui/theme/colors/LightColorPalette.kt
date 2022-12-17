@@ -33,7 +33,7 @@ val LightAppColors = VolanAppColors(
 )
 
 val LightColorScheme = darkColorScheme(
-    primary = Purple200,
+    primary = Purple700,
     onPrimary = Color.White,
 //    primaryContainer = Blue30,
 //    onPrimaryContainer = Blue90,
@@ -50,8 +50,8 @@ val LightColorScheme = darkColorScheme(
 //    onError = Red20,
 //    errorContainer = Red30,
 //    onErrorContainer = Red90,
-//    background = Grey10,
-//    onBackground = Grey90,
+    background = Color.White,
+    onBackground = Color.Black,
 //    surface = Grey10,
 //    onSurface = Grey80,
 //    inverseSurface = Grey90,

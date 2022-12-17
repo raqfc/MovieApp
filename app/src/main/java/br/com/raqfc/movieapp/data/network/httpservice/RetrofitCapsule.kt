@@ -8,8 +8,12 @@ import retrofit2.await
 import javax.inject.Inject
 
 class RetrofitCapsule @Inject constructor(val service: RetrofitService) {
-    suspend fun listItems(path: String, contentType: ContentType): List<ContentDTO> {
-        val result = service.listItems(path, IMDb_API_KEY).await()
+    suspend fun listItems(contentType: ContentType): List<ContentDTO> {
+        val result = service.listItems(contentType.topPath, IMDb_API_KEY).await()
+
+        if(!result.errorMessage.isNullOrBlank()) {
+            throw Error(result.errorMessage)
+        }
 
         return result.items.mapNotNull { map ->
             try {
@@ -23,11 +27,10 @@ class RetrofitCapsule @Inject constructor(val service: RetrofitService) {
     }
 
     suspend fun searchItems(
-        path: String,
         contentType: ContentType,
         search: String
     ): List<ContentDTO> {
-        val result = service.searchItems(path, IMDb_API_KEY, search).await()
+        val result = service.searchItems(contentType.searchPath, IMDb_API_KEY, search).await()
 
         return result.items.mapNotNull { map ->
             try {

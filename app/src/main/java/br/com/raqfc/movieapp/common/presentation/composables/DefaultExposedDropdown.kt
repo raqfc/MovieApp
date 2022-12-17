@@ -1,6 +1,5 @@
 package br.com.raqfc.movieapp.common.presentation.composables
 
-import androidx.compose.material.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 

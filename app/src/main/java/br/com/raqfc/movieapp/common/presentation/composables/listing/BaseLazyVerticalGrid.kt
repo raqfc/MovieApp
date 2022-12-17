@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -17,37 +18,37 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import br.com.raqfc.movieapp.ui.theme.AppTheme
 import br.com.raqfc.movieapp.common.presentation.composables.animations.Transitions
+import br.com.raqfc.movieapp.ui.theme.AppTheme
 
 @Composable
-fun BaseLazyColumn(
+fun BaseLazyVerticalGrid(
+    columns: GridCells,
     modifier: Modifier = Modifier,
-    state: LazyListState = rememberLazyListState(),
-    contentPadding: PaddingValues = PaddingValues(
-        horizontal = AppTheme.dimensions.padding3,
-        vertical = AppTheme.dimensions.padding2
-    ),
-    showScrollUpButton: Boolean = true,
+    state: LazyGridState = rememberLazyGridState(),
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     reverseLayout: Boolean = false,
-    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(AppTheme.dimensions.padding3),
-    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+    showScrollUpButton: Boolean = true,
+    verticalArrangement: Arrangement.Vertical =
+        if (!reverseLayout) Arrangement.Top else Arrangement.Bottom,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
     userScrollEnabled: Boolean = true,
-    content: LazyListScope.() -> Unit
+    content: LazyGridScope.() -> Unit
 ) {
     Box(modifier = modifier) {
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+        LazyVerticalGrid(
+            columns = columns,
+            modifier = modifier,
             state = state,
             contentPadding = contentPadding,
             reverseLayout = reverseLayout,
+            horizontalArrangement = horizontalArrangement,
             verticalArrangement = verticalArrangement,
-            horizontalAlignment = horizontalAlignment,
             flingBehavior = flingBehavior,
             userScrollEnabled = userScrollEnabled,
-            content = content,
+            content = content
         )
 
         if (showScrollUpButton) {

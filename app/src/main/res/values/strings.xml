@@ -33,11 +33,8 @@
     <string name="recover_password_dialog_success_content">O email de recuperação foi enviado com sucesso!</string>
 
     <!-- MainView   -->
-    <string name="main_nav_item_home">Home</string>
-    <string name="main_nav_item_quality">Segurança</string>
-    <string name="main_nav_item_billing">Faturamento</string>
-    <string name="main_nav_item_schedule">Escalas</string>
-    <string name="main_nav_item_config">Configuração</string>
+    <string name="main_tab_movies">Filmes</string>
+    <string name="main_tab_tv">Séries</string>
 
 
     <!-- formats -->
@@ -61,4 +58,13 @@
     <string name="c">aADAda</string>
     <string name="d">addwAdaadad</string>
     <string name="e">bbbe</string>
+
+    <!-- Information   -->
+    <string name="information_empty_content">Parece que encontramos nenhum resultado para sua busca.</string>
+
+    <!-- ErrorInformation   -->
+    <string name="error_information_default_content_description">Alerta de erro</string>
+    <string name="error_information_title">Ops </string>
+    <string name="error_information_content">Ocorreu um erro ao processar sua requisição</string>
+    <string name="try_again">Tentar novamente</string>
 </resources>
