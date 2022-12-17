@@ -1,79 +1,77 @@
 package br.com.raqfc.movieapp.ui.presentation
 
 import ActionItem
-import OverflowMode
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import br.com.raqfc.movieapp.R
+import br.com.raqfc.movieapp.common.presentation.composables.listing.BaseLazyColumn
+import br.com.raqfc.movieapp.common.presentation.composables.listing.BaseListItem
 import br.com.raqfc.movieapp.common.presentation.composables.scaffold.CollapsingToolbarScaffold
 import br.com.raqfc.movieapp.common.presentation.composables.scaffold.rememberCollapsingToolbarScaffoldState
-import br.com.raqfc.movieapp.ui.presentation.bottombar.MainNavigationBarItems
-import br.com.raqfc.movieapp.R
 import br.com.raqfc.movieapp.ui.presentation.view_model.MainViewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainView(navController: NavController, mainViewModel: MainViewModel = hiltViewModel()) {
     val state = rememberCollapsingToolbarScaffoldState()
-
     val actions = listOf(
         ActionItem(R.string.a, Icons.Default.Call, OverflowMode.IF_NECESSARY) {},
         ActionItem(R.string.b, Icons.Default.Send, OverflowMode.IF_NECESSARY) {},
         ActionItem(R.string.c, Icons.Default.Email, OverflowMode.IF_NECESSARY) {},
         ActionItem(R.string.d, Icons.Default.Delete, OverflowMode.IF_NECESSARY) {},
     )
-//    mainViewModel.getContent()
-//
-//    val scope = rememberCoroutineScope()
-//    scope.launch {
-//
-//
-//    }
 
-    val navItems by remember { mutableStateOf(MainNavigationBarItems.getNavItems()) }
-    var selectedIndex by remember { mutableStateOf(0) }
 
     CollapsingToolbarScaffold(
         modifier = Modifier.fillMaxSize(),
         uiEvents = null,
         state = state,
-        bottomBar = {
-            NavigationBar {
-                for ((index, item) in navItems.withIndex()) {
-                    val label = stringResource(id = item.labelRes)
-                    NavigationBarItem(
-                        selected = index == selectedIndex,
-                        onClick = {
-                            selectedIndex = index
-                        },
-                        icon = {
-                            Icon(item.iconVector, contentDescription = label)
-                        },
-                        label = {
-                            Text(
-                                text = label,
-                                softWrap = false,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontSize = MaterialTheme.typography.labelSmall.fontSize
-                            )
-                        }
+        actions = actions
+    ) {
+        BaseLazyColumn(
+            modifier = Modifier
+                .fillMaxWidth(),
+//            state = mListState
+        ) {
+            item {
+                Text(text = "home")
+            }
+            items(100) {
+
+                BaseListItem(
+                    checked = false,
+//                modifier = modifier,
+                    onClick = { }
+                ) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data("https://avatars.githubusercontent.com/u/64285399?s=400&u=eb0133cf08db378ea27e611dc9048b9ff2dc1a64&v=4")
+                            .crossfade(true)
+                            .build(),
+//                placeholder = painterResource(placeholderImageRes),
+                        contentDescription = "",
+                        contentScale = ContentScale.Crop,
+                    )
+                    Text(
+                        text = "Item $it",
+                        modifier = Modifier.padding(start = 8.dp)
                     )
                 }
             }
-        },
-        actions = actions
-    ) {
-        navItems[selectedIndex].view()
+        }
     }
 }

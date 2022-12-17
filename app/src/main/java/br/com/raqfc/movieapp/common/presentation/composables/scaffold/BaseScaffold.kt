@@ -90,7 +90,7 @@ fun BaseScaffold(
                     actions = {
                         ActionMenu(
                             items = actions,
-                            viewWidth = actionsRowWidth
+                            viewWidth = actionsRowWidth.toFloat()
                         )
                     }
                 )

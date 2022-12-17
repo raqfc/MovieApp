@@ -41,12 +41,10 @@ import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.ParentDataModifier
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -57,7 +55,6 @@ import androidx.compose.ui.unit.sp
 import br.com.raqfc.movieapp.common.presentation.BaseUiEvent
 import br.com.raqfc.movieapp.common.presentation.composables.dialog.CustomAlertDialog
 import br.com.raqfc.movieapp.common.presentation.composables.dialog.ProgressDialog
-import br.com.raqfc.movieapp.common.presentation.composables.scaffold.toolbar.*
 import br.com.raqfc.movieapp.common.presentation.composables.scaffold.toolbar.*
 import com.google.android.material.R
 import kotlin.math.max
@@ -137,15 +134,17 @@ fun CollapsingToolbarScaffold(
     val toolbarState = state.toolbarState
     var mUiEvent by remember { mutableStateOf(uiEvents) }
 
-    val configuration = LocalConfiguration.current
-
-    val screenHeight = configuration.screenHeightDp.dp
+    var toolbarWidth by remember { mutableStateOf(0) }
 
     Layout(
         content = {
             CollapsingToolbar(
-                modifier = toolbarModifier,
-                collapsingToolbarState = toolbarState
+                modifier = toolbarModifier
+                    .defaultMinSize(minHeight = 48.0.dp)
+                    .onGloballyPositioned {
+                        toolbarWidth = it.size.width
+                    },
+                collapsingToolbarState = toolbarState,
             ) {
                 Box(
                     modifier = Modifier
@@ -162,7 +161,31 @@ fun CollapsingToolbarScaffold(
 
                     val textSize = (18 + (30 - 18) * state.toolbarState.progress).sp
                     val titleBottomPadding = (16 * (1 - state.toolbarState.progress)).dp
-                    val actionsFraction = if (state.toolbarState.progress == 1f) 0.9f else 0.1f
+                    var actionsFraction by remember { mutableStateOf(0.9f) }
+
+                    var titleSize = IntSize(40,40)
+                    var titlePosition = Offset(0f,0f)
+
+                    var iconsSize = IntSize(40,40)
+                    var iconsPosition = Offset(0f,0f)
+
+                    fun resizeIcons() {
+                        //if title is inline with actions row
+                        val newActionsFraction = if((iconsPosition.y + iconsSize.height) > titlePosition.y) {
+                            //consider title size when resizing row
+                            1 - ((titlePosition.x + titleSize.width + 16.0.dp.value) / toolbarWidth)
+
+                        } else {
+                            //only consider backbutton width
+                            1 - (148.0.dp.value / toolbarWidth)
+
+                        }
+                        if(newActionsFraction != actionsFraction) {
+                            actionsFraction = newActionsFraction
+                        }
+
+
+                    }
 
                     Text(
                         text = stringResource(id = titleRes),
@@ -175,7 +198,11 @@ fun CollapsingToolbarScaffold(
                                 top = 16.dp,
                                 end = 16.dp,
                                 bottom = titleBottomPadding
-                            ),
+                            )
+                            .onGloballyPositioned {
+                                titleSize = it.size
+                                titlePosition = it.positionInParent()
+                            },
                         color = Color.White,
                         fontSize = textSize
                     )
@@ -199,14 +226,26 @@ fun CollapsingToolbarScaffold(
                                 animationSpec = spring(stiffness = StiffnessLow)
                             )
                             .onGloballyPositioned {
-                                actionsRowWidth = it.size.width
+                                var changed = false
+                                if (it.size.width != actionsRowWidth)
+                                    actionsRowWidth = it.size.width
+                                if (iconsSize.height != it.size.height || iconsSize.width != it.size.width) {
+                                    iconsSize = it.size
+                                    changed = true
+                                }
+                                if (iconsPosition.y != it.positionInParent().y || iconsPosition.x != it.positionInParent().x) {
+                                    iconsPosition = it.positionInParent()
+                                    changed = true
+                                }
+                                if (changed)
+                                    resizeIcons()
                             }
                             .pin(Alignment.TopEnd),
                         horizontalArrangement = Arrangement.End
                     ) {
                         ActionMenu(
                             items = actions,
-                            viewWidth = actionsRowWidth
+                            viewWidth = actionsRowWidth.toFloat()
                         )
                     }
                 }

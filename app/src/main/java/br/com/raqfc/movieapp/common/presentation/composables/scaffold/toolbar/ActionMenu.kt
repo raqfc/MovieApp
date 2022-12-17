@@ -1,3 +1,4 @@
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -34,7 +35,7 @@ enum class OverflowMode {
 @Composable
 fun ActionMenu(
     items: List<ActionItem>,
-    viewWidth: Int, // includes overflow menu icon; may be overridden by NEVER_OVERFLOW
+    viewWidth: Float, // includes overflow menu icon; may be overridden by NEVER_OVERFLOW
     menuVisible: MutableState<Boolean> = remember { mutableStateOf(false) }
 ) {
     if (items.isEmpty()) {
@@ -95,13 +96,13 @@ fun ActionMenu(
 
 private fun separateIntoIconAndOverflow(
     items: List<ActionItem>,
-    viewWidth: Int
+    viewWidth: Float
 ): Pair<List<ActionItem>, List<ActionItem>> {
     var (overflowCount, preferIconCount) = Pair(0, 0)
-
+Log.e("separateIntoIconAndOverflow.viewWidth: ",viewWidth.toString())
     val iconActions = ArrayList<ActionItem>()
     val overflowActions = ArrayList<ActionItem>()
-    var usedWidth = 0
+    var usedWidth = 0f
 
     for (item in items) {
         when (item.overflowMode) {
@@ -111,11 +112,11 @@ private fun separateIntoIconAndOverflow(
         }
     }
 
-    fun calculateButtonWidth(hasIcon: Boolean): Int {
-        return if(hasIcon) 48 else 86
+    fun calculateButtonWidth(hasIcon: Boolean): Float {
+        return if(hasIcon) 148.0.dp.value else 86.dp.value
     }
 
-    fun availableWidth(): Int {
+    fun availableWidth(): Float {
         return viewWidth - usedWidth
     }
 
@@ -143,7 +144,7 @@ private fun separateIntoIconAndOverflow(
                 } else {
                     if(overflowCount == 0) {
                         overflowCount +=1
-                        usedWidth += calculateButtonWidth(false)
+                        usedWidth += calculateButtonWidth(true)
                     }
                     overflowActions.add(item)
                 }
