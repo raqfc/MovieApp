@@ -1,12 +1,13 @@
 package br.com.raqfc.movieapp.presentation.fullcontent.composables
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import br.com.raqfc.movieapp.R
 import br.com.raqfc.movieapp.domain.entities.FullContentEntity
 import br.com.raqfc.movieapp.ui.theme.AppTheme
+import br.com.raqfc.movieapp.ui.theme.Shapes
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
@@ -60,14 +63,15 @@ fun FullContentDataView(content: FullContentEntity) {
             contentScale = ContentScale.FillWidth,
         )
 
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = content.fullTitle,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.headlineMedium,
-            fontFamily = FontFamily.SansSerif
-        )
+        SelectionContainer( modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = content.fullTitle,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineMedium,
+                fontFamily = FontFamily.SansSerif
+            )
+        }
 
         Row(
             modifier = Modifier
@@ -220,27 +224,36 @@ fun FullContentDataView(content: FullContentEntity) {
                 if (!content.trailer?.link.isNullOrBlank())
                     uriHandler.openUri(content.trailer?.link!!)
             }) {
-                AsyncImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                Card(
+                    Modifier
+                        .wrapContentSize()
                         .padding(top = AppTheme.dimensions.padding2)
-                        .padding(horizontal = AppTheme.dimensions.padding6),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(content.trailer?.thumbnailUrl!!)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "",
-                    contentScale = ContentScale.FillWidth,
-                )
+                        .padding(horizontal = AppTheme.dimensions.padding6)
+                ) {
+                    AsyncImage(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(content.trailer?.thumbnailUrl!!)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "",
+                        contentScale = ContentScale.FillWidth,
+                    )
+                }
 
-                Icon(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .size(AppTheme.dimensions.actionSize),
-                    imageVector = Icons.Default.PlayArrow,
-                    tint = MaterialTheme.colorScheme.onSurface,
-                    contentDescription = "play arrow"
-                )
+                Box(modifier = Modifier
+                    .padding(12.dp)
+                    .align(Alignment.Center)
+                    .background(Color(0xAA444444), RoundedCornerShape(16.dp))) {
+                    Icon(
+                        modifier = Modifier
+                            .size(AppTheme.dimensions.actionSize),
+                        imageVector = Icons.Default.PlayArrow,
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        contentDescription = "play arrow"
+                    )
+                }
             }
         }
 

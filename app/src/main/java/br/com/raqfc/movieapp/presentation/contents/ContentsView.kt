@@ -43,8 +43,17 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
             Icons.Filled.Movie,
             ContentType.Movie
         ),
-        TabBarItem(R.string.main_tab_tv, Icons.Outlined.LiveTv, Icons.Filled.LiveTv, ContentType.Tv),
-        TabBarItem(R.string.main_tab_favorites, iconUnselected = Icons.Default.FavoriteBorder, iconSelected = Icons.Default.Favorite)
+        TabBarItem(
+            R.string.main_tab_tv,
+            Icons.Outlined.LiveTv,
+            Icons.Filled.LiveTv,
+            ContentType.Tv
+        ),
+        TabBarItem(
+            R.string.main_tab_favorites,
+            iconUnselected = Icons.Default.FavoriteBorder,
+            iconSelected = Icons.Default.Favorite
+        )
     )
 
     Column {
@@ -78,9 +87,13 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
             }
         }
 
-        when(mainViewModel.uiState.value) {
+        when (mainViewModel.uiState.value) {
             MainUiState.ShowError -> {
-                Toast.makeText(LocalContext.current, R.string.error_information_content, Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    LocalContext.current,
+                    R.string.error_information_content,
+                    Toast.LENGTH_LONG
+                ).show()
                 mainViewModel.clearUiState()
             }
             else -> {}
@@ -100,7 +113,8 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
                 }
             }
             is DataResource.Success -> {
-                val isFavoritesView = mainViewModel.viewModeState.value.fetchMode == ContentFetchMode.FAVORITES
+                val isFavoritesView =
+                    mainViewModel.viewModeState.value.fetchMode == ContentFetchMode.FAVORITES
                 if (state.data.isEmpty()) {
                     Information(
                         contentMessage = if (isFavoritesView) R.string.information_empty_favorites else R.string.information_empty_content,
@@ -113,16 +127,20 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
                             items(state.data.size, key = {
                                 state.data[it].id
                             }) {
-                                MainContentGridItem(state.data[it], showFavoriteButton = !isFavoritesView, onExpandContent = {
-                                    navController.navigate(
-                                        Routes.ContentPage.route.replace(
-                                                oldValue = "{contentId}", newValue = it.id
+                                MainContentGridItem(
+                                    state.data[it],
+                                    showFavoriteButton = !isFavoritesView,
+                                    onExpandContent = { c ->
+                                        navController.navigate(
+                                            Routes.ContentPage.route.replace(
+                                                oldValue = "{contentId}", newValue = c.id
                                             )
-                                    )
-                                }, onToggleFavorite = mainViewModel::toggleFavorite)
+                                        )
+                                    },
+                                    onToggleFavorite = mainViewModel::toggleFavorite
+                                )
                             }
                         })
-
                 }
             }
         }
