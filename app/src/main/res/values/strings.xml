@@ -70,6 +70,7 @@
 
     <!-- Information   -->
     <string name="information_empty_content">Parece que encontramos nenhum resultado para sua busca.</string>
+    <string name="information_empty_favorites">Parece que você ainda não tem nenhum favorito.</string>
 
     <!-- ErrorInformation   -->
     <string name="error_information_default_content_description">Alerta de erro</string>

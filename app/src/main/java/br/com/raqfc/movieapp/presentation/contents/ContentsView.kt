@@ -4,6 +4,8 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.LiveTv
 import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material.icons.outlined.LiveTv
@@ -23,6 +25,7 @@ import br.com.raqfc.movieapp.common.presentation.Routes
 import br.com.raqfc.movieapp.common.presentation.composables.Information
 import br.com.raqfc.movieapp.common.presentation.composables.listing.BaseLazyVerticalGrid
 import br.com.raqfc.movieapp.domain.enums.ContentType
+import br.com.raqfc.movieapp.presentation.contents.composables.ContentFetchMode
 import br.com.raqfc.movieapp.presentation.contents.composables.MainContentGridItem
 import br.com.raqfc.movieapp.presentation.contents.composables.TabBarItem
 import br.com.raqfc.movieapp.presentation.contents.view_model.MainViewModel
@@ -40,7 +43,8 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
             Icons.Filled.Movie,
             ContentType.Movie
         ),
-        TabBarItem(R.string.main_tab_tv, Icons.Outlined.LiveTv, Icons.Filled.LiveTv, ContentType.Tv)
+        TabBarItem(R.string.main_tab_tv, Icons.Outlined.LiveTv, Icons.Filled.LiveTv, ContentType.Tv),
+        TabBarItem(R.string.main_tab_favorites, iconUnselected = Icons.Default.FavoriteBorder, iconSelected = Icons.Default.Favorite)
     )
 
     Column {
@@ -50,6 +54,7 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
             containerColor = MaterialTheme.colorScheme.background
         ) {
             tabItems.forEachIndexed { index, item ->
+
                 Tab(
                     selected = selectedTabIndex == index,
                     onClick = {
@@ -84,7 +89,7 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
         when (val state = mainViewModel.state.value) {
             is DataResource.Error -> {
                 //error = state.e,
-                Information(showTryAgain = true, onTryAgain = { mainViewModel.getContent(true) })
+                Information(showTryAgain = true, onTryAgain = { mainViewModel.updateContent(true) })
             }
             is DataResource.Loading -> {
                 Box(
@@ -95,11 +100,12 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
                 }
             }
             is DataResource.Success -> {
+                val isFavoritesView = mainViewModel.viewModeState.value.fetchMode == ContentFetchMode.FAVORITES
                 if (state.data.isEmpty()) {
                     Information(
-                        contentMessage = R.string.information_empty_content,
-                        showTryAgain = true,
-                        onTryAgain = { mainViewModel.getContent(true) })
+                        contentMessage = if (isFavoritesView) R.string.information_empty_favorites else R.string.information_empty_content,
+                        showTryAgain = false,
+                        onTryAgain = { mainViewModel.updateContent(true) })
                 } else {
                     BaseLazyVerticalGrid(columns = GridCells.Fixed(2),
                         contentPadding = PaddingValues(AppTheme.dimensions.padding4),
@@ -107,7 +113,7 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
                             items(state.data.size, key = {
                                 state.data[it].id
                             }) {
-                                MainContentGridItem(state.data[it], onExpandContent = {
+                                MainContentGridItem(state.data[it], showFavoriteButton = !isFavoritesView, onExpandContent = {
                                     navController.navigate(
                                         Routes.ContentPage.route.replace(
                                                 oldValue = "{contentId}", newValue = it.id

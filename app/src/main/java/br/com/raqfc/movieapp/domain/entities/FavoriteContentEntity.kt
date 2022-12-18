@@ -6,18 +6,25 @@ import br.com.raqfc.movieapp.domain.enums.ContentType
 
 class FavoriteContentEntity(
     id: String,
+    timestamp: Long
 ) : BaseEntity(id), CacheableModel<RFavoriteContent, FavoriteContentEntity> {
+    val timestamp: Long
 
+     init {
+         this.timestamp = timestamp
+     }
 
     override fun toRoomEntity(): RFavoriteContent {
         return RFavoriteContent(
-            id = id
+            id = id,
+            timestamp= timestamp
         )
     }
 
     override fun clone(): FavoriteContentEntity {
         return FavoriteContentEntity(
-            id
+            id,
+            timestamp
         )
     }
 }

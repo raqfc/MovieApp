@@ -8,5 +8,6 @@ data class TabBarItem(
     @StringRes val titleRes: Int,
     val iconUnselected: ImageVector,
     val iconSelected: ImageVector,
-    val contentType: ContentType
+    val contentType: ContentType? = null,
+    val isFavorites: Boolean = false
 )

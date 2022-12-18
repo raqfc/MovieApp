@@ -23,7 +23,7 @@ class MainViewModel @Inject constructor(
 ) : BaseNotifyingViewModel<List<ContentEntity>>() {
 
     private val _viewModeState =
-        mutableStateOf(ViewModeState(ContentType.Movie, ContentFetchMode.TOP250, false))
+        mutableStateOf(ViewModeState(ContentType.Movie, ContentFetchMode.TOP250))
     var viewModeState: State<ViewModeState> = _viewModeState
 
     private val _uiState = mutableStateOf<MainUiState>(MainUiState.Default)
@@ -38,14 +38,20 @@ class MainViewModel @Inject constructor(
     private var currentData: MutableList<ContentEntity> = mutableListOf()
 
     init {
-        getContent(false)
+        updateContent(false)
     }
 
-    fun changeContentType(contentType: ContentType) {
-        _viewModeState.value = viewModeState.value.copy(
-            contentType = contentType
-        )
-        getContent()
+    fun changeContentType(contentType: ContentType?) {
+        if(contentType == null)
+            _viewModeState.value = viewModeState.value.copy(
+                fetchMode = ContentFetchMode.FAVORITES
+            )
+        else
+            _viewModeState.value = viewModeState.value.copy(
+                fetchMode = ContentFetchMode.TOP250,
+                contentType = contentType
+            )
+        updateContent()
     }
 
     fun changeFetchMode(fetchMode: ContentFetchMode) {
@@ -54,14 +60,43 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    fun getContent(
+    fun updateContent(
         forceRefresh: Boolean = false,
     ) {
         currentData = mutableListOf()
+        val viewMode = viewModeState.value
+
+        when(viewMode.fetchMode) {
+            ContentFetchMode.TOP250 -> fetchContent(forceRefresh)
+            ContentFetchMode.FAVORITES -> fetchAllFavorites()
+            ContentFetchMode.SEARCH ->  searchContent()
+        }
+
+    }
+    private fun fetchAllFavorites() {
+        baseGetContent {
+            val favorites = favoritesRepository.getAllFavorites()
+            contentRepository.fetchMultiple(favorites)
+        }
+    }
+
+    private fun searchContent() {
+        baseGetContent{  contentRepository.searchContent(viewModeState.value.contentType, "alo") }
+    }
+
+    private fun fetchContent(forceRefresh: Boolean) {
+        baseGetContent {
+            contentRepository.getContent(
+                forceRefresh,
+                viewModeState.value.contentType
+            )
+        }
+    }
+    private fun baseGetContent(func: suspend () -> Result<MutableList<ContentEntity>>) {
         execute(_state) {
             val favorites = favoritesRepository.getAllFavorites()
             val data =
-                contentRepository.getContent(forceRefresh, viewModeState.value.contentType)
+                func()
                     .fold(onSuccess = {
                         it
                     }, onFailure = {

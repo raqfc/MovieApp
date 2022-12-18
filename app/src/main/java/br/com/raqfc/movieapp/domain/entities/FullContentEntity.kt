@@ -27,7 +27,22 @@ data class FullContentEntity(
     var keywords: String?,
     var similars: List<ContentResumeEntity>?,
     var isFavorite: Boolean = false
-)
+) {
+    fun resume(): ContentEntity {
+        return ContentEntity(
+            id = id,
+            rank = "0",
+            title = title,
+            fullTitle = fullTitle,
+            year = year,
+            image = image,
+            crew = "$directors, $stars",
+            rating = imDbRating,
+            ratingCount = imDbRatingVotes,
+            isFavorite = isFavorite,
+        )
+    }
+}
 
 data class ContentResumeEntity(
     var id: String,

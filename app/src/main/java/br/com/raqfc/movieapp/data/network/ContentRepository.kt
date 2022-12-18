@@ -7,14 +7,14 @@ import br.com.raqfc.movieapp.data.network.httpservice.RetrofitCapsule
 import br.com.raqfc.movieapp.domain.entities.ContentEntity
 import br.com.raqfc.movieapp.domain.entities.FullContentEntity
 import br.com.raqfc.movieapp.domain.enums.ContentType
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ContentRepository @Inject constructor(val retrofitCapsule: RetrofitCapsule) {
-    private val memoryCache: MutableMap<ContentType, List<ContentDTO>> = mutableMapOf()
+    private val listMemoryCache: MutableMap<ContentType, List<ContentDTO>> = mutableMapOf()
+    private val fullMemoryCache: MutableMap<String, FullContentDTO> = mutableMapOf()
     private val itemMutex = Mutex()
 
     suspend fun getContent(
@@ -23,7 +23,7 @@ class ContentRepository @Inject constructor(val retrofitCapsule: RetrofitCapsule
     ): Result<MutableList<ContentEntity>> {
         return withContext(Dispatchers.IO) {
             try {
-                val cachedItems = itemMutex.withLock { memoryCache[contentType] }
+                val cachedItems = itemMutex.withLock { listMemoryCache[contentType] }
                 val items = if(!forceRefresh && !cachedItems.isNullOrEmpty()) {
                     Log.e("Getting cached", "")
                     cachedItems
@@ -34,7 +34,7 @@ class ContentRepository @Inject constructor(val retrofitCapsule: RetrofitCapsule
 
                 Log.e("data", items.toString())
                 itemMutex.withLock {
-                    memoryCache[contentType] = items
+                    listMemoryCache[contentType] = items
                 }
 
                 Result.success(items.map {
@@ -58,9 +58,34 @@ class ContentRepository @Inject constructor(val retrofitCapsule: RetrofitCapsule
         }
     }
 
+    suspend fun fetchMultiple(contentIds: MutableList<String>): Result<MutableList<ContentEntity>> {
+        return withContext(Dispatchers.IO) {
+            val contents = mutableListOf<Deferred<Result<FullContentEntity>>>()
+            for (content in contentIds) {
+                contents.add(async { fetchItem(content) })
+            }
+            Result.success(contents.awaitAll().mapNotNull {
+                it.fold(onSuccess = { fc ->
+                    fc.resume()
+                }, onFailure = {
+                    Log.e("fetchMultiple", it.message ?: "  ")
+                    null
+                })
+            }.sortedBy { it.title }.toMutableList())
+        }
+    }
+
     suspend fun fetchItem(contentId: String): Result<FullContentEntity> {
         return try {
+            itemMutex.withLock {
+               if(fullMemoryCache[contentId] != null && fullMemoryCache[contentId]?.toEntity() != null)
+                   return Result.success(fullMemoryCache[contentId]?.toEntity()!!)
+            }
             val item = retrofitCapsule.fetchItem(contentId)
+
+            itemMutex.withLock {
+                fullMemoryCache[contentId] = item
+            }
 
             item.toEntity()?.let { Result.success(it) } ?: throw Exception("Couldnt parse FullContentDTO to Entity")
         } catch (e: Exception) {

@@ -19,7 +19,7 @@ import coil.request.ImageRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContentGridItem(content: ContentEntity, onExpandContent: (ContentEntity) -> Unit, onToggleFavorite: (ContentEntity) -> Unit) {
+fun MainContentGridItem(content: ContentEntity, showFavoriteButton: Boolean, onExpandContent: (ContentEntity) -> Unit, onToggleFavorite: (ContentEntity) -> Unit) {
     Card(
         modifier = Modifier.padding(AppTheme.dimensions.padding3),
         onClick = {
@@ -42,13 +42,14 @@ fun MainContentGridItem(content: ContentEntity, onExpandContent: (ContentEntity)
                 contentScale = ContentScale.FillWidth,
             )
 
-            IconButton(modifier = Modifier.pin(Alignment.TopEnd), onClick = { onToggleFavorite(content) }) {
-                Icon(
-                    imageVector = if (content.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    tint = Color.Red,
-                    contentDescription = "favorite"
-                )
-            }
+            if(showFavoriteButton)
+                IconButton(modifier = Modifier.pin(Alignment.TopEnd), onClick = { onToggleFavorite(content) }) {
+                    Icon(
+                        imageVector = if (content.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        tint = Color.Red,
+                        contentDescription = "favorite"
+                    )
+                }
         }
 
     }

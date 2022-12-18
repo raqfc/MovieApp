@@ -9,10 +9,12 @@ import br.com.raqfc.movieapp.domain.enums.ContentType
 @Entity(tableName = RoomTables.FAVORITE_CONTENTS)
 data class RFavoriteContent(
     @PrimaryKey val id: String,
+    val timestamp: Long
 ) : BaseRoomEntity<FavoriteContentEntity>() {
     override fun toModel(): FavoriteContentEntity {
         return FavoriteContentEntity(
             id = id,
+            timestamp = timestamp
         )
     }
 }
