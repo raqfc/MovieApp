@@ -1,13 +1,13 @@
 package br.com.raqfc.movieapp.domain.enums
 
 enum class ContentType(val topPath: String, val searchPath: String) {
-    TV("Top250TVs","SearchSeries"),
-    MOVIE("Top250Movies", "SearchMovie");
+    Tv("Top250TVs","SearchSeries"),
+    Movie("Top250Movies", "SearchMovie");
     companion object {
         fun fromString(type: String): ContentType {
-            return when(type) {
-                TV.name -> TV
-                else -> MOVIE
+            return when(type.lowercase()) {
+                Tv.name.lowercase() -> Tv
+                else -> Movie
             }
         }
     }

@@ -1,4 +1,4 @@
-package br.com.raqfc.movieapp.ui.presentation.main.composables
+package br.com.raqfc.movieapp.presentation.contents.composables
 
 import br.com.raqfc.movieapp.domain.enums.ContentType
 

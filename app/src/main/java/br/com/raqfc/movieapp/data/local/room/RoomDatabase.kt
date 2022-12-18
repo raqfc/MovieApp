@@ -8,7 +8,7 @@ import br.com.raqfc.movieapp.data.local.entity.RFavoriteContent
 @Database(
     entities = [
         RFavoriteContent::class
-    ], version = 1, exportSchema = false
+    ], version = 2, exportSchema = false
 )
 abstract class AppRoomDatabase : RoomDatabase() {
     abstract fun favoriteContentsDAO(): RFavoriteContentsDAO

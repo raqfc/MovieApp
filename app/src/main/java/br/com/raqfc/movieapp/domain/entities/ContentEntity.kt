@@ -12,7 +12,7 @@ data class ContentEntity (
     val crew: String,
     val rating: String,
     val ratingCount: String,
-    val type: ContentType,
+//    val type: ContentType,
     var isFavorite: Boolean = false
 )
 

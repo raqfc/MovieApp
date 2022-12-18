@@ -6,30 +6,31 @@ import ActionItem
 import ActionMenu
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.raqfc.movieapp.common.presentation.BaseUiEvent
-import br.com.raqfc.movieapp.common.presentation.composables.dialog.CustomAlertDialog
-import br.com.raqfc.movieapp.common.presentation.composables.dialog.ProgressDialog
+import br.com.raqfc.movieapp.R
 import br.com.raqfc.movieapp.common.presentation.composables.scaffold.toolbar.CollapsingToolbarScopeInstance.road
 import br.com.raqfc.movieapp.common.presentation.composables.scaffold.toolbar.ViewConfiguration
-import br.com.raqfc.movieapp.R
+import br.com.raqfc.movieapp.ui.theme.AppTheme
 
 @Composable
 fun BaseScaffold(
     modifier: Modifier = Modifier,
-    showBackButton: Boolean = true,
+    showUpButton: Boolean = true,
     @StringRes titleRes: Int = R.string.app_name,
     actions: List<ActionItem> = listOf(),
     onUpClicked: () -> Unit = {},
+    upIcon: ImageVector = Icons.Default.ArrowBack,
     showDefaultAppBar: Boolean = true,
     topBar: (@Composable () -> Unit) = {},
     bottomBar: @Composable () -> Unit = {},
@@ -37,14 +38,11 @@ fun BaseScaffold(
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
+    titleColor: Color = MaterialTheme.colorScheme.onSurface,
+    appBarColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(backgroundColor),
-
-    uiEvents: BaseUiEvent?,
-
     content: @Composable (PaddingValues) -> Unit
 ) {
-    var mUiEvent by remember { mutableStateOf(uiEvents) }
-    //todo descobrir erro interno da variavel
 
     Scaffold(
         modifier = modifier,
@@ -52,21 +50,25 @@ fun BaseScaffold(
             if (!showDefaultAppBar) topBar()
             else {
                 var actionsRowWidth by remember { mutableStateOf(0) }
-                SmallTopAppBar(
+                TopAppBar(
                     modifier = Modifier
                         .onGloballyPositioned {
                             actionsRowWidth = it.size.width
                         },
+                    colors = TopAppBarDefaults.mediumTopAppBarColors(
+                        containerColor = appBarColor
+                    ),
                     navigationIcon = {
-                        if (showBackButton)
+                        if (showUpButton)
                             IconButton(
                                 onClick = onUpClicked,
                                 modifier = Modifier
-                                    .padding(12.dp),
+                                    .padding(AppTheme.dimensions.padding2),
                             ) {
                                 Icon(
-                                    painter = painterResource(id = com.google.android.material.R.drawable.abc_vector_test),
-                                    contentDescription = "back button"
+                                    imageVector = upIcon,
+                                    contentDescription = "back button",
+                                    tint = titleColor
                                 )
                             }
                     },
@@ -79,22 +81,18 @@ fun BaseScaffold(
                                     ViewConfiguration(Alignment.BottomStart, 16.dp)
                                 )
                                 .padding(
-                                    top = 16.dp,
-                                    end = 16.dp,
-                                    bottom = 16.dp
+                                    top = 16.dp, end = 16.dp, bottom = 16.dp
                                 ),
-                            color = Color.White,
+                            color = titleColor,
                             fontSize = 18.sp
                         )
                     },
                     actions = {
                         ActionMenu(
-                            items = actions,
-                            viewWidth = actionsRowWidth.toFloat()
+                            items = actions, viewWidth = actionsRowWidth.toFloat()
                         )
-                    }
+                    },
                 )
-
             }
         },
         bottomBar = bottomBar,
@@ -103,34 +101,6 @@ fun BaseScaffold(
         floatingActionButtonPosition = floatingActionButtonPosition,
         containerColor = backgroundColor,
         contentColor = contentColor,
-    ) {
-
-        when (mUiEvent) {
-            is BaseUiEvent.ShowDialog -> {}
-            is BaseUiEvent.ShowError -> {
-                (mUiEvent as BaseUiEvent.ShowError).let { e ->
-                    CustomAlertDialog(
-//                        content = e.error.message,//todo
-                        onClick = {
-                            e.onClick()
-                            mUiEvent = null
-
-                        },
-                        onDismiss = {
-                            if (e.dismissible) {
-                                e.onDismissed()
-                                mUiEvent = null
-                            }
-                        }
-                    )
-                }
-            }
-            is BaseUiEvent.ShowProgressIndicator -> {
-                ProgressDialog()
-            }
-            null -> {}
-        }
-
-        content(it)
-    }
+        content = content
+    )
 }

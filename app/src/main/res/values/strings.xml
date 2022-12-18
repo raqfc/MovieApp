@@ -35,7 +35,22 @@
     <!-- MainView   -->
     <string name="main_tab_movies">Filmes</string>
     <string name="main_tab_tv">Séries</string>
+    <string name="main_tab_favorites">Favoritos</string>
+    <string name="main_tab_favorite_action">Favoritar</string>
 
+    <!-- FullContentView   -->
+    <string name="full_content_dot_separator">•</string>
+    <string name="full_content_directors">Direção:</string>
+    <string name="full_content_writers">Roteiristas:</string>
+    <string name="full_content_awards">Prêmios:</string>
+    <string name="full_content_trailer">Trailer:</string>
+    <string name="full_content_keywords">Palavras-chave:</string>
+    <string name="full_content_stars">Estrelas</string>
+    <string name="full_content_duration">Duração:</string>
+    <string name="full_content_ratings">Avaliações:</string>
+    <string name="full_content_rating_imdb">%s/10</string>
+    <string name="full_content_rating_rotten_tomatoes">%s%%</string>
+    <string name="full_content_similars">Similares:</string>
 
     <!-- formats -->
     <string name="format_date_simple">dd/MM/yyyy</string>
@@ -52,12 +67,6 @@
 
     <string name="date_simple_string">%s/%s/%s</string>
 
-
-    <string name="a">a</string>
-    <string name="b">aQda</string>
-    <string name="c">aADAda</string>
-    <string name="d">addwAdaadad</string>
-    <string name="e">bbbe</string>
 
     <!-- Information   -->
     <string name="information_empty_content">Parece que encontramos nenhum resultado para sua busca.</string>

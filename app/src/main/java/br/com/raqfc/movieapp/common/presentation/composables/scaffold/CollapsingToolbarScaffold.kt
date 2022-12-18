@@ -34,6 +34,8 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
@@ -43,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -56,6 +59,7 @@ import br.com.raqfc.movieapp.common.presentation.BaseUiEvent
 import br.com.raqfc.movieapp.common.presentation.composables.dialog.CustomAlertDialog
 import br.com.raqfc.movieapp.common.presentation.composables.dialog.ProgressDialog
 import br.com.raqfc.movieapp.common.presentation.composables.scaffold.toolbar.*
+import br.com.raqfc.movieapp.ui.theme.AppTheme
 import com.google.android.material.R
 import kotlin.math.max
 
@@ -104,8 +108,9 @@ fun CollapsingToolbarScaffold(
     modifier: Modifier = Modifier,
     toolbarModifier: Modifier = Modifier,
 
-    showBackButton: Boolean = true,
-    @DrawableRes backButtonIcon: Int = R.drawable.abc_vector_test,
+    showUpButton: Boolean = true,
+    upIcon: ImageVector = Icons.Default.ArrowBack,
+    title: String? = null,
     @StringRes titleRes: Int = br.com.raqfc.movieapp.R.string.app_name,
     actions: List<ActionItem> = listOf(),
     onUpClicked: () -> Unit = {},
@@ -117,7 +122,7 @@ fun CollapsingToolbarScaffold(
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = contentColorFor(backgroundColor),
 
-    uiEvents: BaseUiEvent?,
+    uiEvents: BaseUiEvent? = null,
 
     state: CollapsingToolbarScaffoldState,
     scrollStrategy: ScrollStrategy = ScrollStrategy.ExitUntilCollapsed,
@@ -188,7 +193,7 @@ fun CollapsingToolbarScaffold(
                     }
 
                     Text(
-                        text = stringResource(id = titleRes),
+                        text = title ?: stringResource(id = titleRes),
                         modifier = Modifier
                             .road(
                                 ViewConfiguration(Alignment.CenterStart, 120.dp),
@@ -207,14 +212,15 @@ fun CollapsingToolbarScaffold(
                         fontSize = textSize
                     )
 
-                    if (showBackButton)
+                    if (showUpButton)
                         IconButton(
                             onClick = onUpClicked,
                             modifier = Modifier
+                                .padding(end = AppTheme.dimensions.padding2)
                                 .pin(),
                         ) {
                             Icon(
-                                painter = painterResource(id = backButtonIcon),
+                                imageVector = upIcon,
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 contentDescription = "back button"
                             )

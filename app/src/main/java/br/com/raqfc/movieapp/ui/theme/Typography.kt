@@ -9,18 +9,18 @@ import androidx.compose.ui.unit.sp
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    bodyMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
-    ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Normal,
-        lineHeight = 16.0.sp,
-        fontSize = 9.sp,
-        letterSpacing = 0.5.sp,
-    )
+//    bodyMedium = TextStyle(
+//        fontFamily = FontFamily.SansSerif,
+//        fontWeight = FontWeight.Normal,
+//        fontSize = 16.sp
+//    ),
+//    labelSmall = TextStyle(
+//        fontFamily = FontFamily.SansSerif,
+//        fontWeight = FontWeight.Normal,
+//        lineHeight = 16.0.sp,
+//        fontSize = 9.sp,
+//        letterSpacing = 0.5.sp,
+//    )
     /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,

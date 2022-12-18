@@ -1,13 +1,18 @@
-package br.com.raqfc.movieapp.ui.presentation.main
+package br.com.raqfc.movieapp.presentation.contents
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material.icons.outlined.LiveTv
 import androidx.compose.material.icons.outlined.Movie
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,14 +21,16 @@ import br.com.raqfc.movieapp.R
 import br.com.raqfc.movieapp.common.DataResource
 import br.com.raqfc.movieapp.common.presentation.Routes
 import br.com.raqfc.movieapp.common.presentation.composables.Information
+import br.com.raqfc.movieapp.common.presentation.composables.listing.BaseLazyVerticalGrid
 import br.com.raqfc.movieapp.domain.enums.ContentType
-import br.com.raqfc.movieapp.ui.presentation.main.composables.MainContentGrid
-import br.com.raqfc.movieapp.ui.presentation.main.composables.TabBarItem
-import br.com.raqfc.movieapp.ui.presentation.main.view_model.MainViewModel
+import br.com.raqfc.movieapp.presentation.contents.composables.MainContentGridItem
+import br.com.raqfc.movieapp.presentation.contents.composables.TabBarItem
+import br.com.raqfc.movieapp.presentation.contents.view_model.MainViewModel
+import br.com.raqfc.movieapp.ui.theme.AppTheme
 
 
 @Composable
-fun MainView(navController: NavController, mainViewModel: MainViewModel = hiltViewModel()) {
+fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hiltViewModel()) {
     var selectedTabIndex by remember { mutableStateOf(0) }
 
     val tabItems = listOf(
@@ -31,9 +38,9 @@ fun MainView(navController: NavController, mainViewModel: MainViewModel = hiltVi
             R.string.main_tab_movies,
             Icons.Outlined.Movie,
             Icons.Filled.Movie,
-            ContentType.MOVIE
+            ContentType.Movie
         ),
-        TabBarItem(R.string.main_tab_tv, Icons.Outlined.LiveTv, Icons.Filled.LiveTv, ContentType.TV)
+        TabBarItem(R.string.main_tab_tv, Icons.Outlined.LiveTv, Icons.Filled.LiveTv, ContentType.Tv)
     )
 
     Column {
@@ -66,13 +73,26 @@ fun MainView(navController: NavController, mainViewModel: MainViewModel = hiltVi
             }
         }
 
+        when(mainViewModel.uiState.value) {
+            MainUiState.ShowError -> {
+                Toast.makeText(LocalContext.current, R.string.error_information_content, Toast.LENGTH_LONG).show()
+                mainViewModel.clearUiState()
+            }
+            else -> {}
+        }
+
         when (val state = mainViewModel.state.value) {
             is DataResource.Error -> {
                 //error = state.e,
                 Information(showTryAgain = true, onTryAgain = { mainViewModel.getContent(true) })
             }
             is DataResource.Loading -> {
-                CircularProgressIndicator()
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    CircularProgressIndicator(Modifier.align(Alignment.Center))
+                }
             }
             is DataResource.Success -> {
                 if (state.data.isEmpty()) {
@@ -81,15 +101,22 @@ fun MainView(navController: NavController, mainViewModel: MainViewModel = hiltVi
                         showTryAgain = true,
                         onTryAgain = { mainViewModel.getContent(true) })
                 } else {
-                    MainContentGrid(state.data, onExpandContent = {
-                        navController.navigate(
-                            Routes.ContentPage.route
-                                .replace(
-                                    oldValue = "{contentId}",
-                                    newValue = it.id
-                                )
-                        )
-                    })
+                    BaseLazyVerticalGrid(columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(AppTheme.dimensions.padding4),
+                        content = {
+                            items(state.data.size, key = {
+                                state.data[it].id
+                            }) {
+                                MainContentGridItem(state.data[it], onExpandContent = {
+                                    navController.navigate(
+                                        Routes.ContentPage.route.replace(
+                                                oldValue = "{contentId}", newValue = it.id
+                                            )
+                                    )
+                                }, onToggleFavorite = mainViewModel::toggleFavorite)
+                            }
+                        })
+
                 }
             }
         }

@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -21,6 +22,7 @@ data class ActionItem(
     val icon: ImageVector? = null,
     val overflowMode: OverflowMode = OverflowMode.IF_NECESSARY,
     val doAction: () -> Unit,
+    val iconColor: Color? = null
 ) {
     // allow 'calling' the action like a function
     operator fun invoke() = doAction()
@@ -50,14 +52,17 @@ fun ActionMenu(
         key(item.hashCode()) {
             val name = stringResource(item.nameRes)
             if (item.icon != null) {
-                IconButton(onClick = item.doAction) {
-                    Icon(item.icon, name)
+                IconButton(onClick = {
+                     Log.e("ALO", "alo")
+                    item.doAction()
+                }) {
+                    Icon(imageVector = item.icon, contentDescription = "", tint = item.iconColor ?: MaterialTheme.colorScheme.onPrimary)
                 }
             } else {
                 TextButton(onClick = item.doAction) {
                     Text(
                         text = name,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = item.iconColor ?: MaterialTheme.colorScheme.onPrimary,
                     )
                 }
             }

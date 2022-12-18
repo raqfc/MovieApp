@@ -3,6 +3,7 @@ package br.com.raqfc.movieapp.ui.theme.colors
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.graphics.Color
 import br.com.raqfc.movieapp.ui.theme.base.VolanAppColors
+import okhttp3.internal.wait
 
 //private val LightColorPalette = lightColors(
 //    primary = Purple500,
@@ -52,8 +53,8 @@ val LightColorScheme = darkColorScheme(
 //    onErrorContainer = Red90,
     background = Color.White,
     onBackground = Color.Black,
-//    surface = Grey10,
-//    onSurface = Grey80,
+    surface = Purple700,
+    onSurface = Color.White,
 //    inverseSurface = Grey90,
 //    inverseOnSurface = Grey20,
 //    surfaceVariant = BlueGrey30,

@@ -17,6 +17,8 @@ data class AppDimensions(
     val padding7: Dp = 20.dp,
     val padding8: Dp = 24.dp,
 
+    val actionSize: Dp = 32.dp,
+
     val formContentHorizontalPadding: Dp = padding4,
     val listTopPadding: Dp = padding5,
 

@@ -7,18 +7,20 @@ import javax.inject.Inject
 
 class FavoriteContentsRepository @Inject constructor(val cacheLocal: FavoriteContentsCacheLocal) {
 
-    suspend fun getAllFavorites(contentType: ContentType): MutableList<String> {
-        return cacheLocal.get {
-            it.type == contentType
-        }.map { it.id }.toMutableList()
+    suspend fun getAllFavorites(): MutableList<String> {
+        return cacheLocal.get().map { it.id }.toMutableList()
     }
 
-    suspend fun setFavorite(id: String, contentType: ContentType, isFavorite: Boolean) {
-        val entry = FavoriteContentEntity(id, contentType)
+    suspend fun setFavorite(id: String, isFavorite: Boolean) {
+        val entry = FavoriteContentEntity(id)
         if(isFavorite) {
             cacheLocal.addOrUpdate(entry)
         } else {
             cacheLocal.delete(entry)
         }
+    }
+
+    suspend fun isFavorite(id: String): Boolean {
+        return cacheLocal.getById(id) != null
     }
 }

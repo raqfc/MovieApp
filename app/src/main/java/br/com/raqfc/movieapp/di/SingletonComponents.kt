@@ -8,7 +8,6 @@ import br.com.raqfc.movieapp.data.local.room.AppRoomDatabase
 import br.com.raqfc.movieapp.data.network.ContentRepository
 import br.com.raqfc.movieapp.data.network.httpservice.RetrofitCapsule
 import br.com.raqfc.movieapp.data.network.httpservice.RetrofitService
-import br.com.raqfc.movieapp.ui.presentation.main.view_model.MainViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,12 +24,6 @@ object SingletonComponents {
 
     @Provides
     @Singleton
-    fun provideMainViewModel(contentRepository: ContentRepository, favoriteContentsRepository: FavoriteContentsRepository): MainViewModel {
-        return MainViewModel(contentRepository, favoriteContentsRepository)
-    }
-
-    @Provides
-    @Singleton
     fun provideContentRepository(retrofitCapsule: RetrofitCapsule): ContentRepository {
         return ContentRepository(retrofitCapsule)
     }
@@ -41,7 +34,7 @@ object SingletonComponents {
         return Room.databaseBuilder(
             context,
             AppRoomDatabase::class.java, "MovieApp-2022.12-01"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides

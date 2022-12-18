@@ -13,7 +13,7 @@ data class ContentDTO(
     val crew: String,
     val imDbRating : String,
     val imDbRatingCount : String,
-    val type: ContentType
+//    val type: ContentType
 ): BaseDTO<ContentEntity>() {
     companion object {
         fun fromMap(data: MutableMap<String, Any>, type: ContentType): ContentDTO? {
@@ -27,7 +27,7 @@ data class ContentDTO(
                 crew = data["crew"] as? String  ?: return null,
                 imDbRating = data["imDbRating"] as? String  ?: return null,
                 imDbRatingCount = data["imDbRatingCount"] as? String  ?: return null,
-                type = type
+//                type = type
             )
         }
     }
@@ -43,7 +43,7 @@ data class ContentDTO(
             crew = crew,
             rating = imDbRating,
             ratingCount = imDbRatingCount,
-            type = type
+//            type = type
         )
     }
 }
