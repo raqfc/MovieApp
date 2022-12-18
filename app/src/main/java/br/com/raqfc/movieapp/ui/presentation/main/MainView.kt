@@ -1,4 +1,4 @@
-package br.com.raqfc.movieapp.ui.presentation
+package br.com.raqfc.movieapp.ui.presentation.main
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -13,11 +13,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.raqfc.movieapp.R
-import br.com.raqfc.movieapp.common.ListResource
+import br.com.raqfc.movieapp.common.DataResource
+import br.com.raqfc.movieapp.common.presentation.Routes
 import br.com.raqfc.movieapp.common.presentation.composables.Information
 import br.com.raqfc.movieapp.domain.enums.ContentType
-import br.com.raqfc.movieapp.ui.presentation.composables.MainContentGrid
-import br.com.raqfc.movieapp.ui.presentation.view_model.MainViewModel
+import br.com.raqfc.movieapp.ui.presentation.main.composables.MainContentGrid
+import br.com.raqfc.movieapp.ui.presentation.main.composables.TabBarItem
+import br.com.raqfc.movieapp.ui.presentation.main.view_model.MainViewModel
 
 
 @Composable
@@ -65,21 +67,29 @@ fun MainView(navController: NavController, mainViewModel: MainViewModel = hiltVi
         }
 
         when (val state = mainViewModel.state.value) {
-            is ListResource.Error -> {
+            is DataResource.Error -> {
                 //error = state.e,
                 Information(showTryAgain = true, onTryAgain = { mainViewModel.getContent(true) })
             }
-            is ListResource.Loading -> {
+            is DataResource.Loading -> {
                 CircularProgressIndicator()
             }
-            is ListResource.Success -> {
+            is DataResource.Success -> {
                 if (state.data.isEmpty()) {
                     Information(
                         contentMessage = R.string.information_empty_content,
                         showTryAgain = true,
                         onTryAgain = { mainViewModel.getContent(true) })
                 } else {
-                    MainContentGrid(state.data)
+                    MainContentGrid(state.data, onExpandContent = {
+                        navController.navigate(
+                            Routes.ContentPage.route
+                                .replace(
+                                    oldValue = "{contentId}",
+                                    newValue = it.id
+                                )
+                        )
+                    })
                 }
             }
         }

@@ -8,7 +8,7 @@ import br.com.raqfc.movieapp.data.local.room.AppRoomDatabase
 import br.com.raqfc.movieapp.data.network.ContentRepository
 import br.com.raqfc.movieapp.data.network.httpservice.RetrofitCapsule
 import br.com.raqfc.movieapp.data.network.httpservice.RetrofitService
-import br.com.raqfc.movieapp.ui.presentation.view_model.MainViewModel
+import br.com.raqfc.movieapp.ui.presentation.main.view_model.MainViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

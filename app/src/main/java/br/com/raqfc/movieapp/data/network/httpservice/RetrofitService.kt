@@ -1,5 +1,6 @@
 package br.com.raqfc.movieapp.data.network.httpservice
 
+import br.com.raqfc.movieapp.data.dto.FullContentDTO
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -13,4 +14,11 @@ interface RetrofitService {
     @GET("{path}/{apiKey}/{expression}")
     @JvmSuppressWildcards
     fun searchItems(@Path("path") path: String, @Path("apiKey") apiKey: String, @Path("expression") expression: String): Call<IMDbReturnType>
+
+
+    @Headers("Accept: */*")
+    @GET("{path}/{apiKey}/{id}/{params}")
+    @JvmSuppressWildcards
+    fun fetchItem(@Path("path") path: String, @Path("apiKey") apiKey: String, @Path("id") id: String, @Path("params") params: String): Call<FullContentDTO>
+
 }

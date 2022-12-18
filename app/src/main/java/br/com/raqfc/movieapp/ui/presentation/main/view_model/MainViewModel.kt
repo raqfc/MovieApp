@@ -1,16 +1,16 @@
-package br.com.raqfc.movieapp.ui.presentation.view_model
+package br.com.raqfc.movieapp.ui.presentation.main.view_model
 
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import br.com.raqfc.movieapp.common.ListResource
+import br.com.raqfc.movieapp.common.DataResource
 import br.com.raqfc.movieapp.common.presentation.BaseNotifyingViewModel
 import br.com.raqfc.movieapp.data.local.FavoriteContentsRepository
 import br.com.raqfc.movieapp.data.network.ContentRepository
 import br.com.raqfc.movieapp.domain.entities.ContentEntity
 import br.com.raqfc.movieapp.domain.enums.ContentType
-import br.com.raqfc.movieapp.ui.presentation.ContentFetchMode
-import br.com.raqfc.movieapp.ui.presentation.ViewModeState
+import br.com.raqfc.movieapp.ui.presentation.main.composables.ContentFetchMode
+import br.com.raqfc.movieapp.ui.presentation.main.composables.ViewModeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     val contentRepository: ContentRepository,
     val favoritesRepository: FavoriteContentsRepository,
-) : BaseNotifyingViewModel<ContentEntity>() {
+) : BaseNotifyingViewModel<List<ContentEntity>>() {
 
     private val _viewModeState = mutableStateOf(ViewModeState(ContentType.MOVIE, ContentFetchMode.TOP250, false))
     var viewModeState: State<ViewModeState> = _viewModeState
@@ -28,8 +28,8 @@ class MainViewModel @Inject constructor(
 //    val eventFlow = _eventFlow.asSharedFlow()
 
 
-    private val _state = mutableStateOf<ListResource<ContentEntity>>(ListResource.Success(mutableListOf()))
-    val state: State<ListResource<ContentEntity>> = _state
+    private val _state = mutableStateOf<DataResource<List<ContentEntity>>>(DataResource.Success(mutableListOf()))
+    val state: State<DataResource<List<ContentEntity>>> = _state
 
     init {
         getContent(false)
@@ -63,7 +63,7 @@ class MainViewModel @Inject constructor(
             data.forEach {
                 it.isFavorite = favorites.contains(it.id)
             }
-            _state.value = ListResource.Success(data = data)
+            _state.value = DataResource.Success(data = data)
             Log.e("MainViewModel -> getContent success:", data.toString())
         }
     }

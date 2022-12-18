@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import br.com.raqfc.movieapp.ui.presentation.MainView
+import androidx.navigation.navArgument
+import br.com.raqfc.movieapp.ui.presentation.main.MainView
 import br.com.raqfc.movieapp.common.presentation.Routes
+import br.com.raqfc.movieapp.ui.presentation.content.FullContentView
 import br.com.raqfc.movieapp.ui.theme.VolanTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,6 +38,19 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         composable(route = Routes.Main.route) {
                             MainView(navController = navController)
+                        }
+                        composable(
+                            route = Routes.ContentPage.route,
+                            arguments = listOf(
+                                navArgument(
+                                    name = "contentId"
+                                ) {
+                                    type = NavType.StringType
+                                }
+                            )
+                        ) {
+                            val contentId = it.arguments?.getString("contentId") ?: ""
+                            FullContentView(navController = navController, contentId)
                         }
                     }
                 }

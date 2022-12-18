@@ -1,4 +1,4 @@
-package br.com.raqfc.movieapp.ui.presentation
+package br.com.raqfc.movieapp.ui.presentation.main.composables
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector

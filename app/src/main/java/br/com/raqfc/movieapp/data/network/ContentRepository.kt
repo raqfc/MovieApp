@@ -2,8 +2,10 @@ package br.com.raqfc.movieapp.data.network
 
 import android.util.Log
 import br.com.raqfc.movieapp.data.dto.ContentDTO
+import br.com.raqfc.movieapp.data.dto.FullContentDTO
 import br.com.raqfc.movieapp.data.network.httpservice.RetrofitCapsule
 import br.com.raqfc.movieapp.domain.entities.ContentEntity
+import br.com.raqfc.movieapp.domain.entities.FullContentEntity
 import br.com.raqfc.movieapp.domain.enums.ContentType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
@@ -51,6 +53,16 @@ class ContentRepository @Inject constructor(val retrofitCapsule: RetrofitCapsule
             Result.success(items.map {
                 it.toEntity()
             }.toMutableList())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun fetchItem(contentId: String): Result<FullContentEntity> {
+        return try {
+            val item = retrofitCapsule.fetchItem(contentId)
+
+            item.toEntity()?.let { Result.success(it) } ?: throw Exception("Couldnt parse FullContentDTO to Entity")
         } catch (e: Exception) {
             Result.failure(e)
         }

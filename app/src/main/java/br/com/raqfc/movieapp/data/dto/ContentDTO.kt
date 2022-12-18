@@ -15,8 +15,6 @@ data class ContentDTO(
     val imDbRatingCount : String,
     val type: ContentType
 ): BaseDTO<ContentEntity>() {
-
-
     companion object {
         fun fromMap(data: MutableMap<String, Any>, type: ContentType): ContentDTO? {
             return ContentDTO(
