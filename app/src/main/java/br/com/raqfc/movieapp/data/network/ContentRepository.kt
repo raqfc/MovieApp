@@ -41,6 +41,8 @@ class ContentRepository @Inject constructor(val retrofitCapsule: RetrofitCapsule
                     it.toEntity()
                 }.sortedBy { it.rank }.toMutableList())
             } catch (e: Exception) {
+                Log.e("getContent", e.message ?: "")
+                e.printStackTrace()
                 Result.failure(e)
             }
         }
@@ -54,6 +56,8 @@ class ContentRepository @Inject constructor(val retrofitCapsule: RetrofitCapsule
                 it.toEntity()
             }.toMutableList())
         } catch (e: Exception) {
+            Log.e("searchContent", e.message ?: "")
+            e.printStackTrace()
             Result.failure(e)
         }
     }

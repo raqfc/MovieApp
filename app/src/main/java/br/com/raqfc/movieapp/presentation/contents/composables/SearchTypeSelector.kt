@@ -19,8 +19,8 @@ fun ContentFetchModeSelector(
 ) {
     val menuVisible: MutableState<Boolean> = remember { mutableStateOf(false) }
     val values = hashMapOf(
-        ContentFetchMode.SEARCH to stringResource(id = R.string.fetch_mode_advanced_search),
         ContentFetchMode.TOP250 to stringResource(id = R.string.fetch_mode_top_250),
+        ContentFetchMode.SEARCH to stringResource(id = R.string.fetch_mode_advanced_search),
     )
     Row(
         Modifier

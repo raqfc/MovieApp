@@ -8,12 +8,12 @@ interface RetrofitService {
     @Headers("Accept: */*")
     @GET("{path}/{apiKey}")
     @JvmSuppressWildcards
-    fun listItems(@Path("path") path: String, @Path("apiKey") apiKey: String): Call<IMDbReturnType>
+    fun listItems(@Path("path") path: String, @Path("apiKey") apiKey: String): Call<IMDbFetchReturnType>
 
     @Headers("Accept: */*")
     @GET("{path}/{apiKey}/{expression}")
     @JvmSuppressWildcards
-    fun searchItems(@Path("path") path: String, @Path("apiKey") apiKey: String, @Path("expression") expression: String): Call<IMDbReturnType>
+    fun searchItems(@Path("path") path: String, @Path("apiKey") apiKey: String, @Path("expression") expression: String): Call<IMDbSearchReturnType>
 
 
     @Headers("Accept: */*")

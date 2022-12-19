@@ -62,6 +62,7 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
         )
     )
     val focusManager = LocalFocusManager.current
+
     Column {
         TabRow(
             selectedTabIndex = selectedTabIndex,

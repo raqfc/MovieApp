@@ -31,14 +31,5 @@ fun CustomAlertDialog(
                 Text(text = stringResource(id = confirmButton))
             }
         },
-//        dismissButton = {
-//            Button(
-//
-//                onClick = {
-//                    openDialog.value = false
-//                }) {
-//                Text("This is the dismiss Button")
-//            }
-//        }
     )
 }

@@ -1,6 +1,5 @@
 package br.com.raqfc.movieapp.common.presentation.composables
 
-import android.util.Patterns
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -16,7 +15,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -24,7 +22,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.raqfc.movieapp.common.presentation.text_input_transformation.MaskVisualTransformation
 import br.com.raqfc.movieapp.common.state.TextFieldState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +34,6 @@ fun DefaultTextField(
     forceValidate: Boolean = false,
     focusRequester: FocusRequester? = null,
     enabled: Boolean = true,
-    mask: FieldMask? = null,
     emptyMessage: String = "Não pode ser vazio",
     validate: Boolean = false,
     validator: (String) -> Boolean = { true },
@@ -118,7 +114,7 @@ fun DefaultTextField(
                 } else trailingIcon?.invoke()
             },
             isError = isError,
-            visualTransformation = if (isPassword && !passwordVisible) PasswordVisualTransformation() else mask?.transformation
+            visualTransformation = if (isPassword && !passwordVisible) PasswordVisualTransformation() else null
                 ?: visualTransformation,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
@@ -137,26 +133,4 @@ fun DefaultTextField(
             )
         }
     }
-}
-
-sealed class FieldMask(val transformation: VisualTransformation) {
-    object DateMask : FieldMask(MaskVisualTransformation("##/##/####"))
-    object DateCompleteMask : FieldMask(MaskVisualTransformation("##/##/#### ##:##"))
-    object CpfMask : FieldMask(MaskVisualTransformation("###.###.###-##"))
-    object CnpjMask : FieldMask(MaskVisualTransformation("##.###.###/####-##"))
-    object PhoneMask : FieldMask(MaskVisualTransformation("(##) #########"))
-}
-
-sealed class FieldValidator(val regex: Regex) {
-    object EmailValidator : FieldValidator(Patterns.EMAIL_ADDRESS.toRegex())
-    object PasswordValidator : FieldValidator(Regex(".{6,}"))
-    object PhoneValidator : FieldValidator(Regex("^\\([1-9]{2}\\) [2-9][0-9]{3}[0-9]{4,5}\$"))
-    object HourValidator : FieldValidator(Regex("^(2[0-3]|[0-1][0-9]):[0-5][0-9]\$"))
-    object DateValidator :
-        FieldValidator(Regex("^(0?[1-9]|[12][0-9]|3[0-1])[\\\\/](0?[1-9]|1[0-2])[\\\\/](19|20)?\\d{2}\$"))
-
-    object DateAndHourValidator :
-        FieldValidator(Regex("^(0?[1-9]|[12][0-9]|3[0-1])[\\\\/](0?[1-9]|1[0-2])[\\\\/](19|20)?\\d{2} (2[0-3]|[0-1][0-9]):[0-5][0-9]\$"))
-
-    object CpfValidator : FieldValidator(Regex("^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}\$"))
 }

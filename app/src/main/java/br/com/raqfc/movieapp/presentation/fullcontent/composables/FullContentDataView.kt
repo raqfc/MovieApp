@@ -2,7 +2,6 @@ package br.com.raqfc.movieapp.presentation.fullcontent.composables
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
@@ -31,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import br.com.raqfc.movieapp.R
 import br.com.raqfc.movieapp.domain.entities.FullContentEntity
 import br.com.raqfc.movieapp.ui.theme.AppTheme
-import br.com.raqfc.movieapp.ui.theme.Shapes
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
@@ -90,12 +88,14 @@ fun FullContentDataView(content: FullContentEntity) {
                     .padding(horizontal = AppTheme.dimensions.padding2),
                 text = content.contentRating
             )
-            Text(text = stringResource(id = R.string.full_content_dot_separator))
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = AppTheme.dimensions.padding2),
-                text = content.duration
-            )
+            if(content.duration != null) {
+                Text(text = stringResource(id = R.string.full_content_dot_separator))
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = AppTheme.dimensions.padding2),
+                    text = content.duration!!
+                )
+            }
         }
 
 
@@ -164,34 +164,38 @@ fun FullContentDataView(content: FullContentEntity) {
             }
         }
 
-        Text(
-            modifier = Modifier
-                .padding(top = AppTheme.dimensions.padding4)
-                .padding(horizontal = AppTheme.dimensions.padding4),
-            fontWeight = FontWeight.Black,
-            text = stringResource(id = R.string.full_content_directors)
-        )
-        Text(
-            modifier = Modifier
-                .padding(top = AppTheme.dimensions.padding2)
-                .padding(horizontal = AppTheme.dimensions.padding6),
-            text = content.directors
-        )
+        if(!content.directors.isNullOrBlank()) {
+            Text(
+                modifier = Modifier
+                    .padding(top = AppTheme.dimensions.padding4)
+                    .padding(horizontal = AppTheme.dimensions.padding4),
+                fontWeight = FontWeight.Black,
+                text = stringResource(id = R.string.full_content_directors)
+            )
+            Text(
+                modifier = Modifier
+                    .padding(top = AppTheme.dimensions.padding2)
+                    .padding(horizontal = AppTheme.dimensions.padding6),
+                text = content.directors!!
+            )
 
+        }
 
-        Text(
-            modifier = Modifier
-                .padding(top = AppTheme.dimensions.padding4)
-                .padding(horizontal = AppTheme.dimensions.padding4),
-            fontWeight = FontWeight.Black,
-            text = stringResource(id = R.string.full_content_writers)
-        )
-        Text(
-            modifier = Modifier
-                .padding(top = AppTheme.dimensions.padding2)
-                .padding(horizontal = AppTheme.dimensions.padding6),
-            text = content.writers
-        )
+        if(!content.writers.isNullOrBlank()) {
+            Text(
+                modifier = Modifier
+                    .padding(top = AppTheme.dimensions.padding4)
+                    .padding(horizontal = AppTheme.dimensions.padding4),
+                fontWeight = FontWeight.Black,
+                text = stringResource(id = R.string.full_content_writers)
+            )
+            Text(
+                modifier = Modifier
+                    .padding(top = AppTheme.dimensions.padding2)
+                    .padding(horizontal = AppTheme.dimensions.padding6),
+                text = content.writers!!
+            )
+        }
 
 
         if (content.awards != null) {
@@ -250,7 +254,7 @@ fun FullContentDataView(content: FullContentEntity) {
                         modifier = Modifier
                             .size(AppTheme.dimensions.actionSize),
                         imageVector = Icons.Default.PlayArrow,
-                        tint = MaterialTheme.colorScheme.onSurface,
+                        tint = Color.White,
                         contentDescription = "play arrow"
                     )
                 }

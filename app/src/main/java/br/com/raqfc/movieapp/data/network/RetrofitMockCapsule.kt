@@ -1,18 +1,16 @@
-package br.com.raqfc.movieapp.data.network.httpservice
+package br.com.raqfc.movieapp.data.network
 
 import android.util.Log
-import br.com.raqfc.movieapp.BuildConfig.IMDb_API_KEY
 import br.com.raqfc.movieapp.data.dto.ContentDTO
 import br.com.raqfc.movieapp.data.dto.FullContentDTO
-import br.com.raqfc.movieapp.data.network.MockRetrofitData
+import br.com.raqfc.movieapp.data.network.httpservice.IMDbFetchReturnType
+import br.com.raqfc.movieapp.data.network.httpservice.IMDbSearchReturnType
 import br.com.raqfc.movieapp.domain.enums.ContentType
 import com.google.gson.Gson
-import retrofit2.await
-import javax.inject.Inject
 
-class RetrofitCapsule @Inject constructor(val service: RetrofitService) {
+class RetrofitMockCapsule {
     suspend fun listItems(contentType: ContentType): List<ContentDTO> {
-        val result = service.listItems(contentType.topPath, IMDb_API_KEY).await()
+        val result = Gson().fromJson(MockRetrofitData.listMovieItems, IMDbFetchReturnType::class.java)
 
         if(!result.errorMessage.isNullOrBlank()) {
             throw Error(result.errorMessage)
@@ -33,7 +31,7 @@ class RetrofitCapsule @Inject constructor(val service: RetrofitService) {
         contentType: ContentType,
         search: String
     ): List<ContentDTO> {
-        val result = service.searchItems(contentType.searchPath, IMDb_API_KEY, search.trim().replace("\n","")).await()
+        val result = Gson().fromJson(MockRetrofitData.searchMovieItems, IMDbSearchReturnType::class.java)
 
         if(!result.errorMessage.isNullOrBlank()) {
             throw Error(result.errorMessage)
@@ -51,7 +49,9 @@ class RetrofitCapsule @Inject constructor(val service: RetrofitService) {
     }
 
     suspend fun fetchItem(itemId: String): FullContentDTO {
-        return service.fetchItem("Title", IMDb_API_KEY, itemId, "Trailer,Ratings").await()
+        val result = MockRetrofitData.fullContentItem
+
+        return Gson().fromJson(result, FullContentDTO::class.java)
     }
 
 }

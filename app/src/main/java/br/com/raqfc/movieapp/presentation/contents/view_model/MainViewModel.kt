@@ -57,10 +57,17 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun clearSearch() {
+        _searchState.value = searchState.value.copy(
+            text = ""
+        )
+    }
+
     fun changeContentType(contentType: ContentType) {
         _viewModeState.value = viewModeState.value.copy(
             contentType = contentType
         )
+        clearSearch()
 
         updateContent()
     }
@@ -103,10 +110,10 @@ class MainViewModel @Inject constructor(
 
     private fun inMemorySearch(search: String) {
         _state.value = DataResource.Success(currentData.filter {
-            var normalizedSearch = Normalizer.normalize(search.trim(), Normalizer.Form.NFD)
+            var normalizedSearch = Normalizer.normalize(search.trim().lowercase(), Normalizer.Form.NFD)
             normalizedSearch = Regex("\\p{InCombiningDiacriticalMarks}+").replace(normalizedSearch, "")
 
-            var normalizedTitle = Normalizer.normalize(it.title.trim(), Normalizer.Form.NFD)
+            var normalizedTitle = Normalizer.normalize(it.title.trim().lowercase(), Normalizer.Form.NFD)
             normalizedTitle = Regex("\\p{InCombiningDiacriticalMarks}+").replace(normalizedTitle, "")
 
             normalizedTitle.contains(normalizedSearch) || normalizedSearch.contains(normalizedTitle)

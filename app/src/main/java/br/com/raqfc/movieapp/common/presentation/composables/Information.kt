@@ -22,7 +22,6 @@ import br.com.raqfc.movieapp.ui.theme.AppTheme
 @Composable
 fun Information(
     modifier: Modifier = Modifier,
-//    error: Exception,
     imageVector: ImageVector = Icons.Default.Error,
     @StringRes titleMessage: Int = R.string.error_information_title,
     @StringRes contentMessage: Int = R.string.error_information_content,

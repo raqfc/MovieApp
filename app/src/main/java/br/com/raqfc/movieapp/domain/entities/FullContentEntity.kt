@@ -10,12 +10,12 @@ data class FullContentEntity(
     var year: String,
     var image: String,
     var releaseDate: String,
-    var duration: String,
+    var duration: String?,
     var plot: String,
     var plotLocal: String?,
     var awards: String?,
-    var directors: String,
-    var writers: String,
+    var directors: String?,
+    var writers: String?,
     var stars: String,
     var genres: String,
     var contentRating: String,
@@ -31,14 +31,9 @@ data class FullContentEntity(
     fun resume(): ContentEntity {
         return ContentEntity(
             id = id,
-            rank = "0",
+            rank = null,
             title = title,
-            fullTitle = fullTitle,
-            year = year,
             image = image,
-            crew = "$directors, $stars",
-            rating = imDbRating,
-            ratingCount = imDbRatingVotes,
             isFavorite = isFavorite,
         )
     }
