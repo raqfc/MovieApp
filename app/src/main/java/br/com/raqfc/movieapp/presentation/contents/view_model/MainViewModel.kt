@@ -155,7 +155,6 @@ class MainViewModel @Inject constructor(
             }
             currentData = data
             _state.value = DataResource.Success(data = data)
-            Log.e("MainViewModel -> getContent success:", data.toString())
 
             if(viewModeState.value.contentType == ContentType.AllFavorites) {
                 inMemorySearch(searchState.value.text)
@@ -164,7 +163,6 @@ class MainViewModel @Inject constructor(
     }
 
     fun toggleFavorite(contentEntity: ContentEntity) {
-        Log.e(" toggleFavorite", " toggleFavorite")
         execute(onError = {
             _uiState.value = MainUiState.ShowError()
             contentEntity.isFavorite = !contentEntity.isFavorite

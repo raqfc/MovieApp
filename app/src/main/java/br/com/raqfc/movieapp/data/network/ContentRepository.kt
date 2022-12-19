@@ -12,7 +12,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
-class ContentRepository @Inject constructor(val retrofitCapsule: RetrofitCapsule) {
+class ContentRepository @Inject constructor(private val retrofitCapsule: RetrofitCapsule) {
     private val listMemoryCache: MutableMap<ContentType, List<ContentDTO>> = mutableMapOf()
     private val fullMemoryCache: MutableMap<String, FullContentDTO> = mutableMapOf()
     private val itemMutex = Mutex()
@@ -25,14 +25,11 @@ class ContentRepository @Inject constructor(val retrofitCapsule: RetrofitCapsule
             try {
                 val cachedItems = itemMutex.withLock { listMemoryCache[contentType] }
                 val items = if(!forceRefresh && !cachedItems.isNullOrEmpty()) {
-                    Log.e("Getting cached", "")
                     cachedItems
                 } else {
-                    Log.e("Fetching data", "")
                     retrofitCapsule.listItems(contentType)
                 }
 
-                Log.e("data", items.toString())
                 itemMutex.withLock {
                     listMemoryCache[contentType] = items
                 }

@@ -15,7 +15,7 @@ class RetrofitCapsule @Inject constructor(val service: RetrofitService) {
         val result = service.listItems(contentType.topPath, IMDb_API_KEY).await()
 
         if(!result.errorMessage.isNullOrBlank()) {
-            throw Error(result.errorMessage)
+            throw Exception(result.errorMessage)
         }
 
         return result.items.mapNotNull { map ->
