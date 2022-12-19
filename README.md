@@ -6,14 +6,13 @@ Nas Tabs de Filmes e séries é possível alternar entre 2 modos de busca: Top25
 
 Nas listagens é possível favoritar/desfavoritar um filme/série ou clicar no poster em si, e assim ter uma visualização expandida do título.
 
-Tela inicial no modo Top 250
-![img.png](readme_content/top_250_mode.png)
-Modo de busca:
-![img.png](readme_content/search_mode.png)
+Tela inicial no modo Top 250 e no modo de busca:
+
+<img src="readme_content/top_250_mode.png" alt="" height="500" /> <img src="readme_content/search_mode.png" alt="" height="500" />
 
 Tela de favoritos:
-![img.png](readme_content/favorites.png)
-![img.png](readme_content/favorites_empty.png)
+
+<img src="readme_content/favorites.png" alt="" height="500" /> <img src="readme_content/favorites_empty.png" alt="" height="500" />
 
 Para rodar o projeto é preciso criar arquivo um arquivo "apiKey.properties":
 ```
