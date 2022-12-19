@@ -1,6 +1,5 @@
 package br.com.raqfc.movieapp.presentation.contents.view_model
 
-import android.icu.text.StringSearch
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -22,8 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    val contentRepository: ContentRepository,
-    val favoritesRepository: FavoriteContentsRepository,
+    private val contentRepository: ContentRepository,
+    private val favoritesRepository: FavoriteContentsRepository,
 ) : BaseNotifyingViewModel<List<ContentEntity>>() {
 
     private val _viewModeState =
@@ -53,27 +52,21 @@ class MainViewModel @Inject constructor(
         _searchState.value = searchState.value.copy(
             text = newValue
         )
-        if(viewModeState.value.fetchMode == ContentFetchMode.FAVORITES) {
+        if(viewModeState.value.contentType == ContentType.AllFavorites) {
             inMemorySearch(newValue)
         }
     }
 
-    fun changeContentType(contentType: ContentType?) {
-        if(contentType == null)
-            _viewModeState.value = viewModeState.value.copy(
-                fetchMode = ContentFetchMode.FAVORITES
-            )
-        else
-            _viewModeState.value = viewModeState.value.copy(
-                fetchMode = ContentFetchMode.TOP250,
-                contentType = contentType
-            )
+    fun changeContentType(contentType: ContentType) {
+        _viewModeState.value = viewModeState.value.copy(
+            contentType = contentType
+        )
+
         updateContent()
     }
 
 
     fun changeFetchMode(fetchMode: ContentFetchMode) {
-//        val newMode = ContentFetchMode.fromString(fetchMode)
         _viewModeState.value = viewModeState.value.copy(
             fetchMode = fetchMode
         )
@@ -87,21 +80,23 @@ class MainViewModel @Inject constructor(
     ) {
         currentData = mutableListOf()
         val viewMode = viewModeState.value
+        _state.value = DataResource.Success(currentData)
+
+        if(viewMode.contentType == ContentType.AllFavorites)
+            return fetchAllFavorites()
 
         when(viewMode.fetchMode) {
             ContentFetchMode.TOP250 -> fetchContent(forceRefresh)
-            ContentFetchMode.FAVORITES -> fetchAllFavorites()
-            ContentFetchMode.SEARCH ->  mSearchContent()
+            ContentFetchMode.SEARCH ->  searchContent()
         }
     }
 
     fun searchContent() {
         if(viewModeState.value.fetchMode == ContentFetchMode.SEARCH) {
-            if(searchState.value.text.isBlank()) {
-                _uiState.value = MainUiState.ShowError(R.string.message_toast_invalid_search)
-            } else
+            if(searchState.value.text.isNotBlank()) {
                 mSearchContent()
-        } else if (viewModeState.value.fetchMode == ContentFetchMode.FAVORITES) {
+            }
+        } else if (viewModeState.value.contentType == ContentType.AllFavorites) {
             inMemorySearch(searchState.value.text)
         }
     }
@@ -155,7 +150,7 @@ class MainViewModel @Inject constructor(
             _state.value = DataResource.Success(data = data)
             Log.e("MainViewModel -> getContent success:", data.toString())
 
-            if(viewModeState.value.fetchMode == ContentFetchMode.FAVORITES) {
+            if(viewModeState.value.contentType == ContentType.AllFavorites) {
                 inMemorySearch(searchState.value.text)
             }
         }

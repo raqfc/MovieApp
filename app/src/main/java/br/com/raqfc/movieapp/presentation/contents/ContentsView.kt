@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.raqfc.movieapp.R
@@ -31,10 +32,7 @@ import br.com.raqfc.movieapp.common.presentation.composables.DefaultTextField
 import br.com.raqfc.movieapp.common.presentation.composables.Information
 import br.com.raqfc.movieapp.common.presentation.composables.listing.BaseLazyVerticalGrid
 import br.com.raqfc.movieapp.domain.enums.ContentType
-import br.com.raqfc.movieapp.presentation.contents.composables.ContentFetchMode
-import br.com.raqfc.movieapp.presentation.contents.composables.ContentFetchModeSelector
-import br.com.raqfc.movieapp.presentation.contents.composables.MainContentGridItem
-import br.com.raqfc.movieapp.presentation.contents.composables.TabBarItem
+import br.com.raqfc.movieapp.presentation.contents.composables.*
 import br.com.raqfc.movieapp.presentation.contents.view_model.MainViewModel
 import br.com.raqfc.movieapp.ui.theme.AppTheme
 
@@ -59,7 +57,8 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
         TabBarItem(
             R.string.main_tab_favorites,
             iconUnselected = Icons.Default.FavoriteBorder,
-            iconSelected = Icons.Default.Favorite
+            iconSelected = Icons.Default.Favorite,
+            ContentType.AllFavorites
         )
     )
     val focusManager = LocalFocusManager.current
@@ -110,13 +109,13 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
             mainViewModel.viewModeState.value
 
         Row(
-            Modifier.fillMaxWidth(),
+            Modifier.fillMaxWidth().wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (viewModeState.fetchMode == ContentFetchMode.SEARCH || viewModeState.fetchMode == ContentFetchMode.FAVORITES) {
+            if (viewModeState.fetchMode == ContentFetchMode.SEARCH || viewModeState.contentType == ContentType.AllFavorites) {
                 DefaultTextField(
-                    Modifier.padding(AppTheme.dimensions.padding3).fillMaxWidth(),
+                    Modifier.padding(AppTheme.dimensions.padding3).weight(1f, true),
                     state = mainViewModel.searchState.value,
                     onValueChange = mainViewModel::onSearchChanged,
                     keyboardOptions = KeyboardOptions(
@@ -130,22 +129,28 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
                     }),
                 )
             } else {
-                Box(modifier = Modifier.wrapContentWidth())
+                Box(modifier = Modifier.width(0.5.dp))
             }
 
-            if (viewModeState.fetchMode != ContentFetchMode.FAVORITES) {
+            if (viewModeState.contentType != ContentType.AllFavorites) {
                 ContentFetchModeSelector(
                     mainViewModel.viewModeState.value.fetchMode,
                     mainViewModel::changeFetchMode,
                 )
             } else {
-                Box(modifier = Modifier.wrapContentWidth())
+                Box(modifier = Modifier.width(0.5.dp))
             }
         }
 
         when (val state = mainViewModel.state.value) {
             is DataResource.Error -> {
-                Information(showTryAgain = true, onTryAgain = { mainViewModel.updateContent(true) })
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    Information(Modifier.align(Alignment.Center), showTryAgain = true, onTryAgain = { mainViewModel.updateContent(true) })
+                }
+
             }
             is DataResource.Loading -> {
                 Box(
@@ -163,7 +168,7 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
                     ) {
                         Information(
                             Modifier.align(Alignment.Center),
-                            contentMessage = if (viewModeState.fetchMode == ContentFetchMode.FAVORITES)
+                            contentMessage = if (viewModeState.contentType == ContentType.AllFavorites)
                                 if (mainViewModel.searchState.value.text.isNotBlank())
                                     R.string.information_empty_favorites_searched
                                 else
@@ -181,7 +186,7 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
                             }) {
                                 MainContentGridItem(
                                     state.data[it],
-                                    showFavoriteButton = viewModeState.fetchMode != ContentFetchMode.FAVORITES,
+                                    showFavoriteButton = viewModeState.contentType != ContentType.AllFavorites,
                                     onExpandContent = { c ->
                                         navController.navigate(
                                             Routes.ContentPage.route.replace(
