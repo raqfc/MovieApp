@@ -3,6 +3,8 @@ package br.com.raqfc.movieapp.presentation.contents
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -15,17 +17,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.raqfc.movieapp.R
 import br.com.raqfc.movieapp.common.DataResource
 import br.com.raqfc.movieapp.common.presentation.Routes
+import br.com.raqfc.movieapp.common.presentation.composables.DefaultTextField
 import br.com.raqfc.movieapp.common.presentation.composables.Information
 import br.com.raqfc.movieapp.common.presentation.composables.listing.BaseLazyVerticalGrid
 import br.com.raqfc.movieapp.domain.enums.ContentType
 import br.com.raqfc.movieapp.presentation.contents.composables.ContentFetchMode
+import br.com.raqfc.movieapp.presentation.contents.composables.ContentFetchModeSelector
 import br.com.raqfc.movieapp.presentation.contents.composables.MainContentGridItem
 import br.com.raqfc.movieapp.presentation.contents.composables.TabBarItem
 import br.com.raqfc.movieapp.presentation.contents.view_model.MainViewModel
@@ -55,7 +62,7 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
             iconSelected = Icons.Default.Favorite
         )
     )
-
+    val focusManager = LocalFocusManager.current
     Column {
         TabRow(
             selectedTabIndex = selectedTabIndex,
@@ -88,10 +95,10 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
         }
 
         when (mainViewModel.uiState.value) {
-            MainUiState.ShowError -> {
+            is MainUiState.ShowError -> {
                 Toast.makeText(
                     LocalContext.current,
-                    R.string.error_information_content,
+                    (mainViewModel.uiState.value as MainUiState.ShowError).messageRes,
                     Toast.LENGTH_LONG
                 ).show()
                 mainViewModel.clearUiState()
@@ -99,9 +106,45 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
             else -> {}
         }
 
+        val viewModeState =
+            mainViewModel.viewModeState.value
+
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            if (viewModeState.fetchMode == ContentFetchMode.SEARCH || viewModeState.fetchMode == ContentFetchMode.FAVORITES) {
+                DefaultTextField(
+                    Modifier.padding(AppTheme.dimensions.padding3).fillMaxWidth(),
+                    state = mainViewModel.searchState.value,
+                    onValueChange = mainViewModel::onSearchChanged,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Search
+                    ),
+                    singleLine = true,
+                    keyboardActions = KeyboardActions(onSearch = {
+                        focusManager.clearFocus()
+                        mainViewModel.searchContent()
+                    }),
+                )
+            } else {
+                Box(modifier = Modifier.wrapContentWidth())
+            }
+
+            if (viewModeState.fetchMode != ContentFetchMode.FAVORITES) {
+                ContentFetchModeSelector(
+                    mainViewModel.viewModeState.value.fetchMode,
+                    mainViewModel::changeFetchMode,
+                )
+            } else {
+                Box(modifier = Modifier.wrapContentWidth())
+            }
+        }
+
         when (val state = mainViewModel.state.value) {
             is DataResource.Error -> {
-                //error = state.e,
                 Information(showTryAgain = true, onTryAgain = { mainViewModel.updateContent(true) })
             }
             is DataResource.Loading -> {
@@ -113,13 +156,22 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
                 }
             }
             is DataResource.Success -> {
-                val isFavoritesView =
-                    mainViewModel.viewModeState.value.fetchMode == ContentFetchMode.FAVORITES
                 if (state.data.isEmpty()) {
-                    Information(
-                        contentMessage = if (isFavoritesView) R.string.information_empty_favorites else R.string.information_empty_content,
-                        showTryAgain = false,
-                        onTryAgain = { mainViewModel.updateContent(true) })
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        Information(
+                            Modifier.align(Alignment.Center),
+                            contentMessage = if (viewModeState.fetchMode == ContentFetchMode.FAVORITES)
+                                if (mainViewModel.searchState.value.text.isNotBlank())
+                                    R.string.information_empty_favorites_searched
+                                else
+                                    R.string.information_empty_favorites else
+                                R.string.information_empty_content,
+                            showTryAgain = false,
+                            onTryAgain = { mainViewModel.updateContent(true) })
+                    }
                 } else {
                     BaseLazyVerticalGrid(columns = GridCells.Fixed(2),
                         contentPadding = PaddingValues(AppTheme.dimensions.padding4),
@@ -129,7 +181,7 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
                             }) {
                                 MainContentGridItem(
                                     state.data[it],
-                                    showFavoriteButton = !isFavoritesView,
+                                    showFavoriteButton = viewModeState.fetchMode != ContentFetchMode.FAVORITES,
                                     onExpandContent = { c ->
                                         navController.navigate(
                                             Routes.ContentPage.route.replace(

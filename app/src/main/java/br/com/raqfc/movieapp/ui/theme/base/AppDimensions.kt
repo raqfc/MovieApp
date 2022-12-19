@@ -16,6 +16,8 @@ data class AppDimensions(
     val padding6: Dp = 16.dp,
     val padding7: Dp = 20.dp,
     val padding8: Dp = 24.dp,
+    val padding9: Dp = 30.dp,
+    val padding10: Dp = 32.dp,
 
     val actionSize: Dp = 32.dp,
 

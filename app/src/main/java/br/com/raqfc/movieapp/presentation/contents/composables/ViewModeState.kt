@@ -7,5 +7,15 @@ data class ViewModeState(val contentType: ContentType, val fetchMode: ContentFet
 enum class ContentFetchMode {
     TOP250,
     FAVORITES,
-    SEARCH
+    SEARCH;
+
+    companion object {
+        fun fromString(mode: String): ContentFetchMode {
+            return when(mode) {
+                FAVORITES.name -> FAVORITES
+                SEARCH.name -> SEARCH
+                else -> TOP250
+            }
+        }
+    }
 }

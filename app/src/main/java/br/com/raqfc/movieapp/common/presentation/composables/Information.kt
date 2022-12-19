@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import br.com.raqfc.movieapp.R
 import br.com.raqfc.movieapp.common.presentation.composables.DefaultButton
 import br.com.raqfc.movieapp.ui.theme.AppTheme
@@ -34,8 +35,7 @@ fun Information(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.dimensions.padding8)
-            .padding(top = AppTheme.dimensions.padding8)
+            .padding(horizontal = AppTheme.dimensions.padding10)
             .then(modifier), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
@@ -46,11 +46,13 @@ fun Information(
         Text(
             modifier = Modifier.padding(top = AppTheme.dimensions.padding3),
             text = stringResource(id = titleMessage),
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.labelMedium
         )
         Text(
             modifier = Modifier.padding(top = AppTheme.dimensions.padding3),
             text = stringResource(id = contentMessage),
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.labelSmall
         )
 

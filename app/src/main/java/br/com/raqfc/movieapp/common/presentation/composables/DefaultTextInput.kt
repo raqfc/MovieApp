@@ -126,7 +126,7 @@ fun DefaultTextField(
             maxLines = maxLines,
             interactionSource = interactionSource,
             shape = shape,
-            colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
+//            colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent, textColor = MaterialTheme.colorScheme.onSurface)
         )
         if (isError && errorMessage.isNotBlank()) {
             Text(

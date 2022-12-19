@@ -5,22 +5,6 @@ import androidx.compose.ui.graphics.Color
 import br.com.raqfc.movieapp.ui.theme.base.VolanAppColors
 import okhttp3.internal.wait
 
-//private val LightColorPalette = lightColors(
-//    primary = Purple500,
-//    primaryVariant = Purple700,
-//    secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
-//)
-
-
 private val colorLightPrimary = Color(0xFFFFB400)
 private val colorLightTextPrimary = Color(0xFF000000)
 private val colorLightTextSecondary = Color(0xFF6C727A)
@@ -53,11 +37,11 @@ val LightColorScheme = darkColorScheme(
 //    onErrorContainer = Red90,
     background = Color.White,
     onBackground = Color.Black,
-    surface = Purple700,
-    onSurface = Color.White,
+    surface = Color.White,
+    onSurface = Color.Black,
 //    inverseSurface = Grey90,
 //    inverseOnSurface = Grey20,
-//    surfaceVariant = BlueGrey30,
-//    onSurfaceVariant = BlueGrey80,
+    surfaceVariant = Purple200.copy(alpha = 0.2f),
+    onSurfaceVariant = Color.Black,
 //    outline = BlueGrey60
 )

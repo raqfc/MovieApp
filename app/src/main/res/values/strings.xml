@@ -37,6 +37,11 @@
     <string name="main_tab_tv">Séries</string>
     <string name="main_tab_favorites">Favoritos</string>
     <string name="main_tab_favorite_action">Favoritar</string>
+    <string name="contents_advanced_search_hint">Busca</string>
+    <string name="message_toast_invalid_search">Escreva o que deseja procurar!</string>
+    <string name="fetch_mode">Tipo de busca</string>
+    <string name="fetch_mode_top_250">Top 250</string>
+    <string name="fetch_mode_advanced_search">Busca</string>
 
     <!-- FullContentView   -->
     <string name="full_content_dot_separator">•</string>
@@ -71,6 +76,7 @@
     <!-- Information   -->
     <string name="information_empty_content">Parece que encontramos nenhum resultado para sua busca.</string>
     <string name="information_empty_favorites">Parece que você ainda não tem nenhum favorito.</string>
+    <string name="information_empty_favorites_searched">Não achamos nenhum conteúdo para sua busca. Tente fazer uma outra busca ou adicione novos favoritos.</string>
 
     <!-- ErrorInformation   -->
     <string name="error_information_default_content_description">Alerta de erro</string>
