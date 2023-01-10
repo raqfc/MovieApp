@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.raqfc.movieapp.R
-import br.com.raqfc.movieapp.common.DataResource
 import br.com.raqfc.movieapp.common.presentation.composables.Information
 import br.com.raqfc.movieapp.common.presentation.composables.scaffold.CollapsingToolbarScaffold
 import br.com.raqfc.movieapp.common.presentation.composables.scaffold.rememberCollapsingToolbarScaffoldState

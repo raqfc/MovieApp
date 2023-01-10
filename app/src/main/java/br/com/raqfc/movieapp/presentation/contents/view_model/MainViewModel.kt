@@ -1,11 +1,10 @@
 package br.com.raqfc.movieapp.presentation.contents.view_model
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import br.com.raqfc.compose_components.DataResource
+import br.com.raqfc.compose_components.viewmodel.BaseNotifyingViewModel
 import br.com.raqfc.movieapp.R
-import br.com.raqfc.movieapp.common.DataResource
-import br.com.raqfc.movieapp.common.presentation.BaseNotifyingViewModel
 import br.com.raqfc.movieapp.common.state.TextFieldState
 import br.com.raqfc.movieapp.data.local.FavoriteContentsRepository
 import br.com.raqfc.movieapp.data.network.ContentRepository
@@ -23,7 +22,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val contentRepository: ContentRepository,
     private val favoritesRepository: FavoriteContentsRepository,
-) : BaseNotifyingViewModel<List<ContentEntity>>() {
+) : BaseNotifyingViewModel() {
 
     private val _viewModeState =
         mutableStateOf(ViewModeState(ContentType.Movie, ContentFetchMode.TOP250))

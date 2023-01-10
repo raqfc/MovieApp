@@ -25,12 +25,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import br.com.raqfc.compose_components.DataResource
+import br.com.raqfc.compose_components.composables.DefaultTextField
+import br.com.raqfc.compose_components.composables.Information
+import br.com.raqfc.compose_components.composables.listing.BaseLazyVerticalGrid
 import br.com.raqfc.movieapp.R
-import br.com.raqfc.movieapp.common.DataResource
 import br.com.raqfc.movieapp.common.presentation.Routes
-import br.com.raqfc.movieapp.common.presentation.composables.DefaultTextField
-import br.com.raqfc.movieapp.common.presentation.composables.Information
-import br.com.raqfc.movieapp.common.presentation.composables.listing.BaseLazyVerticalGrid
 import br.com.raqfc.movieapp.domain.enums.ContentType
 import br.com.raqfc.movieapp.presentation.contents.composables.*
 import br.com.raqfc.movieapp.presentation.contents.view_model.MainViewModel
@@ -114,6 +114,7 @@ fun ContentsView(navController: NavController, mainViewModel: MainViewModel = hi
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+
             if (viewModeState.fetchMode == ContentFetchMode.SEARCH || viewModeState.contentType == ContentType.AllFavorites) {
                 DefaultTextField(
                     Modifier.padding(AppTheme.dimensions.padding3).weight(1f, true),

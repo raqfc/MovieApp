@@ -3,7 +3,6 @@ package br.com.raqfc.movieapp.presentation.fullcontent
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
-import br.com.raqfc.movieapp.common.DataResource
 import br.com.raqfc.movieapp.common.presentation.BaseNotifyingViewModel
 import br.com.raqfc.movieapp.data.local.FavoriteContentsRepository
 import br.com.raqfc.movieapp.data.network.ContentRepository
